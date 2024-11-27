@@ -52,7 +52,7 @@ Welcome to my personal portfolio repository! This website is a showcase of my sk
 
 ## 🌐 Live Demo
 
-[Check out the live website here!](#) *(Replace `#` with the link after deploying, e.g., GitHub Pages URL)*
+[Check out the live website here!](https://asifahamed11.github.io/asif-ahamed-portfolio/)
 
 ---
 
