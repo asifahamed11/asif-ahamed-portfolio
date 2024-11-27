@@ -61,7 +61,6 @@ Welcome to my personal portfolio repository! This website is a showcase of my sk
 Feel free to reach out to me for collaborations, feedback, or queries:
 
 - **Email**: [asifahamedstudent@gmail.com](mailto:asifahamedstudent@gmail.com)
-- **Phone**: +880 1770 396222
 - **LinkedIn**: [Asif Ahamed](https://www.linkedin.com/in/asif-ahamed-4aa72b182/)
 - **GitHub**: [asifahamed11](https://github.com/asifahamed11)
 
