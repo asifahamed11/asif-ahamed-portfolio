@@ -1,3 +1,6 @@
+// Base path for GitHub Pages deployment
+export const BASE_PATH = "/asif-ahamed-portfolio";
+
 export const personalInfo = {
   name: "Asif Ahamed",
   tagline: "Bridging Software Engineering & AI Research",

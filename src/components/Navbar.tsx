@@ -13,6 +13,7 @@ import {
   Mail,
   Download,
 } from "lucide-react";
+import { BASE_PATH } from "@/lib/data";
 
 const navLinks = [
   { href: "#about", label: "About", icon: User },
@@ -68,7 +69,7 @@ export default function Navbar() {
                 </a>
               ))}
               <a
-                href="/CV.pdf"
+                href={`${BASE_PATH}/CV.pdf`}
                 download
                 className="flex items-center gap-1.5 px-3 py-2 ml-2 text-sm bg-accent/10 hover:bg-accent/20 text-accent-light hover:text-accent transition-all duration-300 ease-out rounded-lg hover:scale-105 hover:shadow-lg hover:shadow-accent/20"
               >
@@ -122,7 +123,7 @@ export default function Navbar() {
                 </motion.a>
               ))}
               <motion.a
-                href="/CV.pdf"
+                href={`${BASE_PATH}/CV.pdf`}
                 download
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
