@@ -16,7 +16,7 @@ import {
   Trophy,
   FileDown,
 } from "lucide-react";
-import { personalInfo, education } from "@/lib/data";
+import { personalInfo, education, BASE_PATH } from "@/lib/data";
 import SectionHeading from "./SectionHeading";
 import { User } from "lucide-react";
 
@@ -65,7 +65,7 @@ export default function About() {
           >
             <div className="relative w-48 h-48 mb-4 rounded-2xl overflow-hidden ring-2 ring-accent/20 group-hover:ring-accent/40 transition-all">
               <Image
-                src="/asif-ahamed-portfolio/asif.jpg"
+                src={`${BASE_PATH}/asif.jpg`}
                 alt="Asif Ahamed"
                 fill
                 className="object-cover"
@@ -79,7 +79,7 @@ export default function About() {
               {personalInfo.tagline}
             </p>
             <a
-              href="/asif-ahamed-portfolio/CV.pdf"
+              href={`${BASE_PATH}/CV.pdf`}
               download
               className="flex items-center gap-2 px-4 py-2.5 bg-accent hover:bg-accent-light text-white rounded-xl text-sm font-medium transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 w-full justify-center"
             >
