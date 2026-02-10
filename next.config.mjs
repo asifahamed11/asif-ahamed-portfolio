@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",  ে
+  output: "export",
   basePath: "/asif-ahamed-portfolio",
   images: {
-    unoptimized: true, 
+    unoptimized: true,
   },
 };
 
