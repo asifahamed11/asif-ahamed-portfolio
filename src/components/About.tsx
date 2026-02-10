@@ -65,7 +65,7 @@ export default function About() {
           >
             <div className="relative w-48 h-48 mb-4 rounded-2xl overflow-hidden ring-2 ring-accent/20 group-hover:ring-accent/40 transition-all">
               <Image
-                src="https://asifahamed11.github.io/asif-ahamed-portfolio/asif.jpg"
+                src="https://github.com/asifahamed11/asif-ahamed-portfolio/blob/main/public/asif.jpg"
                 alt="Asif Ahamed"
                 fill
                 className="object-cover"
@@ -79,7 +79,7 @@ export default function About() {
               {personalInfo.tagline}
             </p>
             <a
-              href="https://asifahamed11.github.io/asif-ahamed-portfolio/CV.pdf"
+              href="https://github.com/asifahamed11/asif-ahamed-portfolio/blob/main/public/CV.pdf"
               download
               className="flex items-center gap-2 px-4 py-2.5 bg-accent hover:bg-accent-light text-white rounded-xl text-sm font-medium transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 w-full justify-center"
             >
