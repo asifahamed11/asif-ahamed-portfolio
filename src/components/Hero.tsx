@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Mail, ArrowDown, Sparkles } from "lucide-react";
-import { personalInfo } from "@/lib/data";
+import { personalInfo, highlightStats } from "@/lib/data";
 
 function NeuralNetwork() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -64,7 +64,6 @@ function NeuralNetwork() {
         ctx.fill();
       });
 
-      // Draw connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -107,69 +106,50 @@ function NeuralNetwork() {
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Backgrounds */}
       <NeuralNetwork />
       <div className="mesh-gradient" />
       <div className="grid-pattern" />
 
-      {/* Decorative orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/8 rounded-full blur-3xl animate-pulse-slow" />
       <div
         className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/8 rounded-full blur-3xl animate-pulse-slow"
         style={{ animationDelay: "1s" }}
       />
 
-      {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center pb-20">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              delay: 0.15,
-              duration: 0.5,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
+            transition={{ delay: 0.15, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-light mb-8"
           >
             <Sparkles className="w-3.5 h-3.5 text-accent-light" />
             <span>Research Award Recipient</span>
           </motion.div>
 
-          {/* Name */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
             <span className="text-foreground">Hi, I&apos;m </span>
             <span className="text-gradient">{personalInfo.name}</span>
           </h1>
 
-          {/* Tagline */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{
-              delay: 0.35,
-              duration: 0.6,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
-            className="text-lg sm:text-xl md:text-2xl text-muted-light max-w-2xl mx-auto mb-10 leading-relaxed"
+            transition={{ delay: 0.35, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="text-lg sm:text-xl md:text-2xl text-muted-light max-w-3xl mx-auto mb-10 leading-relaxed"
           >
-            {personalInfo.tagline}
+            Building production-ready software and publishable AI research with measurable outcomes.
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: 0.5,
-              duration: 0.5,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
+            transition={{ delay: 0.5, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <a
@@ -187,10 +167,26 @@ export default function Hero() {
               Contact Me
             </a>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto"
+          >
+            {highlightStats.map((stat) => (
+              <div
+                key={stat.label}
+                className="glass rounded-xl p-3 sm:p-4 text-left border border-white/10"
+              >
+                <p className="text-xs uppercase tracking-wider text-muted mb-1">{stat.label}</p>
+                <p className="text-sm sm:text-base font-semibold text-foreground">{stat.value}</p>
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -203,9 +199,7 @@ export default function Hero() {
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="flex flex-col items-center gap-2"
           >
-            <span className="text-xs text-muted-light uppercase tracking-wider">
-              Scroll
-            </span>
+            <span className="text-xs text-muted-light uppercase tracking-wider">Scroll</span>
             <ArrowDown className="w-5 h-5 text-accent-light" />
           </motion.div>
         </a>

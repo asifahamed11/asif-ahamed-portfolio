@@ -39,6 +39,7 @@ const socialLinks = [
   { icon: BookOpen, href: personalInfo.scholar, label: "Google Scholar" },
   { icon: Code2, href: personalInfo.codeforces, label: "Codeforces" },
   { icon: ExternalLink, href: personalInfo.leetcode, label: "LeetCode" },
+  { icon: ExternalLink, href: personalInfo.beecrowd, label: "BeeCrowd" },
 ];
 
 export default function About() {
@@ -65,7 +66,7 @@ export default function About() {
           >
             <div className="relative w-48 h-48 mb-4 rounded-2xl overflow-hidden ring-2 ring-accent/20 group-hover:ring-accent/40 transition-all">
               <Image
-                src="https://raw.githubusercontent.com/asifahamed11/asif-ahamed-portfolio/refs/heads/main/asif.jpg"
+                src="/asif-ahamed-portfolio/asif.jpg"
                 alt="Asif Ahamed"
                 fill
                 className="object-cover"

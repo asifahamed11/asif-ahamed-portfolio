@@ -89,6 +89,15 @@ export default function Contact() {
           icon={Mail}
         />
 
+
+        <div className="glass rounded-2xl p-5 mb-6 border border-accent/20">
+          <p className="text-xs uppercase tracking-wider text-accent-light mb-2">Availability</p>
+          <p className="text-sm text-muted-light leading-relaxed">
+            Currently open to research collaborations, software engineering internships, and ML-focused product work.
+            Preferred response time: within 24 hours.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Contact Details */}
           <motion.div
