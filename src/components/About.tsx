@@ -65,7 +65,7 @@ export default function About() {
           >
             <div className="relative w-48 h-48 mb-4 rounded-2xl overflow-hidden ring-2 ring-accent/20 group-hover:ring-accent/40 transition-all">
               <Image
-                src="https://drive.google.com/file/d/1uHielqZztNi-FyIL10GKZ5TStkNx7uti/view?usp=sharing"
+                src="https://raw.githubusercontent.com/asifahamed11/asif-ahamed-portfolio/refs/heads/main/asif.jpg"
                 alt="Asif Ahamed"
                 fill
                 className="object-cover"
