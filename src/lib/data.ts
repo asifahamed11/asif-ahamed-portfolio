@@ -22,6 +22,20 @@ export const education = {
   expectedGraduation: "2026",
 };
 
+
+
+export interface HighlightStat {
+  label: string;
+  value: string;
+}
+
+export const highlightStats: HighlightStat[] = [
+  { label: "Publications", value: "8" },
+  { label: "Research Award", value: "UCICS 2026" },
+  { label: "Projects Built", value: "12+" },
+  { label: "CGPA", value: "3.93 / 4.00" },
+];
+
 export interface Publication {
   id: number;
   title: string;
@@ -122,6 +136,8 @@ export const publications: Publication[] = [
 export interface Project {
   title: string;
   description: string;
+  impact: string;
+  year: string;
   tech: string[];
   github?: string;
   live?: string;
@@ -132,6 +148,8 @@ export const projects: Project[] = [
     title: "Nova Monitor",
     description:
       "Real-time deep learning model training monitor that sends AI-summarized logs to Telegram to avoid spam.",
+    impact: "Reduced noisy training logs into concise alerts for faster debugging.",
+    year: "2025",
     tech: ["Python", "n8n", "Google Gemini API", "Telegram API"],
     github: "https://github.com/asifahamed11/Nova-Monitor",
   },
@@ -139,6 +157,8 @@ export const projects: Project[] = [
     title: "MediLinx",
     description:
       "A comprehensive healthcare management platform connecting patients and doctors with AI-based health recommendations.",
+    impact: "Unified appointment flow, doctor discovery, and AI-assisted patient guidance.",
+    year: "2024",
     tech: ["PHP", "MySQL", "AI Integration"],
     github: "https://github.com/asifahamed11/MediLinx",
   },
@@ -146,6 +166,8 @@ export const projects: Project[] = [
     title: "DocRater",
     description:
       "Cross-platform mobile application for finding and rating doctors with real user reviews.",
+    impact: "Improved patient trust with crowdsourced doctor ratings and feedback loops.",
+    year: "2024",
     tech: ["Flutter", "Firebase"],
     github: "https://github.com/asifahamed11/DocRater",
   },
@@ -153,6 +175,8 @@ export const projects: Project[] = [
     title: "One-Click-GLUT",
     description:
       "Automated installer for Code::Blocks with MinGW and FreeGLUT configuration, simplifying OpenGL development setup.",
+    impact: "Turned a multi-step setup into a single click for student developers.",
+    year: "2023",
     tech: ["C", "Batch Script"],
     github: "https://github.com/asifahamed11/One-Click-GLUT",
   },
@@ -160,6 +184,8 @@ export const projects: Project[] = [
     title: "MiniSocialMedia",
     description:
       "A social media application featuring authentication, posts, likes, and comments functionality.",
+    impact: "Delivered full CRUD social interactions with secure account access.",
+    year: "2023",
     tech: ["PHP"],
     github: "https://github.com/asifahamed11/MiniSocialMedia",
   },
@@ -167,6 +193,8 @@ export const projects: Project[] = [
     title: "Pop-cat-recycle-bin",
     description:
       "A fun utility that transforms the Windows Recycle Bin into the Pop Cat meme using registry modifications.",
+    impact: "Packaged a playful OS customization into a reusable script.",
+    year: "2022",
     tech: ["Batchfile", "Registry"],
     github: "https://github.com/asifahamed11/Pop-cat-recycle-bin",
   },
