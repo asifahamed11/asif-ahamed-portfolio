@@ -14,7 +14,7 @@ Personal portfolio built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, 
 npm install
 npm run dev
 ```
-Open `http://localhost:3000`.
+Open `https://asifahamed11.github.io/asif-ahamed-portfolio/`.
 
 ## Scripts
 ```bash
