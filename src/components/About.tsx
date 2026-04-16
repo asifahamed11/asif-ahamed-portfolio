@@ -5,7 +5,6 @@ import Image from "next/image";
 import {
   MapPin,
   GraduationCap,
-  Award,
   Calendar,
   Mail,
   Github,

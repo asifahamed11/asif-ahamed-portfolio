@@ -98,19 +98,19 @@ function PublicationCard({ pub }: { pub: Publication }) {
     <motion.div
       variants={itemVariants}
       layout
-      className={`glass rounded-2xl p-6 transition-all duration-400 group relative overflow-hidden ${
-        isAwarded ? `border-amber-DEFAULT/20 ${style.glow}` : style.hoverBorder
+      className={`glass rounded-2xl transition-all duration-400 group relative ${
+        isAwarded ? `border-amber-DEFAULT/20 ${style.glow} pt-3 px-6 pb-6` : `p-6 ${style.hoverBorder}`
       }`}
     >
       {/* Glow effect for awarded */}
       {isAwarded && (
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-DEFAULT/5 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-DEFAULT/5 via-transparent to-transparent pointer-events-none" />
       )}
 
       {/* Award badge */}
       {isAwarded && (
-        <div className="absolute -top-3 right-6 z-10">
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-DEFAULT/15 border border-amber-DEFAULT/25 rounded-full shimmer">
+        <div className="flex justify-end mb-3 relative z-10">
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-DEFAULT/15 border border-amber-DEFAULT/25 rounded-full">
             <Award className="w-3 h-3 text-amber-light" />
             <span className="text-xs font-semibold text-amber-light">
               {pub.awardTitle}
