@@ -15,10 +15,10 @@ import {
   Code2,
   Trophy,
   FileDown,
+  User,
 } from "lucide-react";
-import { personalInfo, education } from "@/lib/data";
+import { useContent } from "@/lib/content-provider";
 import SectionHeading from "./SectionHeading";
-import { User } from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -33,17 +33,25 @@ const itemVariants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-const socialLinks = [
-  { icon: Github, href: personalInfo.github, label: "GitHub" },
-  { icon: Linkedin, href: personalInfo.linkedin, label: "LinkedIn" },
-  { icon: BookOpen, href: personalInfo.scholar, label: "Google Scholar" },
-  { icon: Code2, href: personalInfo.codeforces, label: "Codeforces" },
-  { icon: ExternalLink, href: personalInfo.leetcode, label: "LeetCode" },
-];
-
 export default function About() {
+  const { personalInfo, education } = useContent();
+
+  const socialLinks = [
+    { icon: Github, href: personalInfo.github, label: "GitHub" },
+    { icon: Linkedin, href: personalInfo.linkedin, label: "LinkedIn" },
+    { icon: BookOpen, href: personalInfo.scholar, label: "Google Scholar" },
+    { icon: Code2, href: personalInfo.codeforces, label: "Codeforces" },
+    { icon: ExternalLink, href: personalInfo.leetcode, label: "LeetCode" },
+  ];
+
+  // CGPA percentage for the ring
+  const cgpaPercent =
+    (parseFloat(education.cgpa) / parseFloat(education.maxCgpa)) * 100;
+  const circumference = 2 * Math.PI * 42;
+  const strokeDashoffset = circumference - (cgpaPercent / 100) * circumference;
+
   return (
-    <section id="about" className="py-20 md:py-28 px-4 sm:px-6">
+    <section id="about" className="py-20 md:py-28 px-4 sm:px-6 section-glow">
       <div className="max-w-7xl mx-auto">
         <SectionHeading
           title="About Me"
@@ -58,43 +66,48 @@ export default function About() {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         >
-          {/* Profile Image Card - Spans 2 rows on lg */}
+          {/* Profile Image Card */}
           <motion.div
             variants={itemVariants}
-            className="lg:row-span-2 glass rounded-2xl p-6 hover:border-accent/20 transition-all duration-300 group flex flex-col items-center"
+            className="lg:row-span-2 glass rounded-2xl p-6 transition-all duration-300 group flex flex-col items-center relative overflow-hidden glass-violet"
           >
-            <div className="relative w-48 h-48 mb-4 rounded-2xl overflow-hidden ring-2 ring-accent/20 group-hover:ring-accent/40 transition-all">
-              <Image
-                src="https://raw.githubusercontent.com/asifahamed11/asif-ahamed-portfolio/refs/heads/main/asif.jpg"
-                alt="Asif Ahamed"
-                fill
-                className="object-cover"
-                priority
-              />
+            <div className="absolute inset-0 bg-gradient-to-b from-violet-DEFAULT/5 to-transparent pointer-events-none" />
+            <div className="relative w-48 h-48 mb-4 rounded-2xl overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-DEFAULT via-violet-DEFAULT to-rose-DEFAULT rounded-2xl p-[2px]">
+                <div className="w-full h-full rounded-2xl overflow-hidden bg-background">
+                  <Image
+                    src="https://raw.githubusercontent.com/asifahamed11/asif-ahamed-portfolio/refs/heads/main/asif.jpg"
+                    alt={personalInfo.name}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              </div>
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-1">
+            <h3 className="text-xl font-bold text-foreground mb-1 relative">
               {personalInfo.name}
             </h3>
-            <p className="text-sm text-muted-light text-center mb-4">
+            <p className="text-sm text-muted-light text-center mb-4 relative">
               {personalInfo.tagline}
             </p>
             <a
               href="https://drive.google.com/uc?export=download&id=1lHpOWo6pKdiCdmNFm01LXBD-qrD2cGHz"
               download
-              className="flex items-center gap-2 px-4 py-2.5 bg-accent hover:bg-accent-light text-white rounded-xl text-sm font-medium transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 w-full justify-center"
+              className="relative flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan-DEFAULT to-violet-DEFAULT hover:from-cyan-light hover:to-violet-light text-white rounded-xl text-sm font-medium transition-all duration-300 hover:shadow-glow-cyan w-full justify-center"
             >
               <FileDown className="w-4 h-4" />
               Download CV
             </a>
           </motion.div>
 
-          {/* Education Card - Spans 2 cols */}
+          {/* Education Card */}
           <motion.div
             variants={itemVariants}
-            className="md:col-span-2 glass rounded-2xl p-6 hover:border-accent/20 transition-all duration-300 group"
+            className="md:col-span-2 glass rounded-2xl p-6 transition-all duration-300 group glass-cyan"
           >
             <div className="flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-accent/10 text-accent-light shrink-0">
+              <div className="p-3 rounded-xl bg-cyan-DEFAULT/10 text-cyan-light shrink-0">
                 <GraduationCap className="w-6 h-6" />
               </div>
               <div>
@@ -105,11 +118,11 @@ export default function About() {
                   {education.institution}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 text-xs text-muted-light">
-                    <Calendar className="w-3 h-3" />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-DEFAULT/5 border border-cyan-DEFAULT/10 text-xs text-muted-light">
+                    <Calendar className="w-3 h-3 text-cyan-light" />
                     {education.semester}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 text-xs text-muted-light">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-DEFAULT/5 border border-cyan-DEFAULT/10 text-xs text-muted-light">
                     Expected {education.expectedGraduation}
                   </span>
                 </div>
@@ -117,33 +130,55 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* CGPA Card */}
+          {/* CGPA Card with Ring */}
           <motion.div
             variants={itemVariants}
-            className="glass rounded-2xl p-6 hover:border-accent/20 transition-all duration-300 flex flex-col justify-between"
+            className="glass rounded-2xl p-6 transition-all duration-300 flex flex-col items-center justify-center glass-amber"
           >
-            <div className="p-3 rounded-xl bg-gold/10 text-gold-light w-fit mb-4">
-              <Award className="w-6 h-6" />
+            <div className="relative w-24 h-24 mb-3">
+              <svg className="w-24 h-24 -rotate-90" viewBox="0 0 96 96">
+                <circle
+                  cx="48"
+                  cy="48"
+                  r="42"
+                  strokeWidth="4"
+                  className="fill-none stroke-white/5"
+                />
+                <motion.circle
+                  cx="48"
+                  cy="48"
+                  r="42"
+                  strokeWidth="4"
+                  className="fill-none"
+                  stroke="url(#cgpaGradient)"
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  initial={{ strokeDashoffset: circumference }}
+                  whileInView={{ strokeDashoffset }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+                />
+                <defs>
+                  <linearGradient id="cgpaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#f59e0b" />
+                    <stop offset="100%" stopColor="#fbbf24" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-2xl font-bold text-foreground">{education.cgpa}</span>
+                <span className="text-[10px] text-muted">/ {education.maxCgpa}</span>
+              </div>
             </div>
-            <div>
-              <p className="text-muted text-xs uppercase tracking-wider mb-1">
-                CGPA
-              </p>
-              <p className="text-3xl font-bold text-foreground">
-                {education.cgpa}
-                <span className="text-lg text-muted ml-1">
-                  / {education.maxCgpa}
-                </span>
-              </p>
-            </div>
+            <p className="text-muted text-xs uppercase tracking-wider">CGPA</p>
           </motion.div>
 
           {/* Location Card */}
           <motion.div
             variants={itemVariants}
-            className="glass rounded-2xl p-6 hover:border-accent/20 transition-all duration-300 flex flex-col justify-between"
+            className="glass rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between glass-cyan"
           >
-            <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 w-fit mb-4">
+            <div className="p-3 rounded-xl bg-emerald-DEFAULT/10 text-emerald-light w-fit mb-4">
               <MapPin className="w-6 h-6" />
             </div>
             <div>
@@ -156,17 +191,18 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Award Card - Spans 2 cols */}
+          {/* Award Card */}
           <motion.div
             variants={itemVariants}
-            className="md:col-span-2 glass rounded-2xl p-6 border-gold/20 hover:border-gold/40 transition-all duration-300"
+            className="md:col-span-2 glass rounded-2xl p-6 border-amber-DEFAULT/15 transition-all duration-300 relative overflow-hidden shimmer glass-amber"
           >
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-gold/10 text-gold-light shrink-0">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-DEFAULT/5 rounded-full blur-3xl" />
+            <div className="flex items-start gap-4 relative">
+              <div className="p-3 rounded-xl bg-amber-DEFAULT/10 text-amber-light shrink-0">
                 <Trophy className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-gold-light text-xs font-semibold uppercase tracking-wider mb-1">
+                <p className="text-amber-light text-xs font-semibold uppercase tracking-wider mb-1">
                   Achievement
                 </p>
                 <h3 className="text-lg font-semibold text-foreground mb-1">
@@ -180,10 +216,10 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Social Links Card - Spans 2 cols */}
+          {/* Social Links Card */}
           <motion.div
             variants={itemVariants}
-            className="md:col-span-2 glass rounded-2xl p-6 hover:border-accent/20 transition-all duration-300"
+            className="md:col-span-2 glass rounded-2xl p-6 transition-all duration-300 glass-violet"
           >
             <p className="text-muted text-xs uppercase tracking-wider mb-4">
               Connect
@@ -191,7 +227,7 @@ export default function About() {
             <div className="flex flex-wrap gap-3">
               <a
                 href={`mailto:${personalInfo.email}`}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-muted-light hover:text-foreground transition-all text-sm"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-cyan-DEFAULT/10 text-muted-light hover:text-cyan-light transition-all text-sm border border-transparent hover:border-cyan-DEFAULT/15"
               >
                 <Mail className="w-4 h-4" />
                 Email
@@ -202,7 +238,7 @@ export default function About() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-muted-light hover:text-foreground transition-all text-sm"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-violet-DEFAULT/10 text-muted-light hover:text-violet-light transition-all text-sm border border-transparent hover:border-violet-DEFAULT/15"
                 >
                   <link.icon className="w-4 h-4" />
                   {link.label}

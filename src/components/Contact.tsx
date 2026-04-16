@@ -14,10 +14,17 @@ import {
   ExternalLink,
   Send,
 } from "lucide-react";
-import { personalInfo } from "@/lib/data";
+import { useContent } from "@/lib/content-provider";
 import SectionHeading from "./SectionHeading";
 
+const socialColors: Record<string, string> = {
+  GitHub: "hover:bg-white/10 hover:text-white hover:border-white/15",
+  LinkedIn: "hover:bg-[#0077b5]/10 hover:text-[#0077b5] hover:border-[#0077b5]/20",
+  "Google Scholar": "hover:bg-[#4285f4]/10 hover:text-[#4285f4] hover:border-[#4285f4]/20",
+};
+
 export default function Contact() {
+  const { personalInfo } = useContent();
   const [copied, setCopied] = useState(false);
 
   const copyEmail = async () => {
@@ -26,7 +33,6 @@ export default function Contact() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback
       const textArea = document.createElement("textarea");
       textArea.value = personalInfo.email;
       document.body.appendChild(textArea);
@@ -44,18 +50,20 @@ export default function Contact() {
       label: "Email",
       value: personalInfo.email,
       href: `mailto:${personalInfo.email}`,
-      action: copyEmail,
+      color: "cyan",
     },
     {
       icon: Phone,
       label: "Phone",
       value: personalInfo.phone,
       href: `tel:${personalInfo.phone.replace(/\s/g, "")}`,
+      color: "violet",
     },
     {
       icon: MapPin,
       label: "Location",
       value: personalInfo.location,
+      color: "emerald",
     },
   ];
 
@@ -81,8 +89,13 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="py-20 md:py-28 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className="py-20 md:py-28 px-4 sm:px-6 relative">
+      {/* Background glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-cyan-DEFAULT/5 via-violet-DEFAULT/3 to-transparent blur-3xl" />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative">
         <SectionHeading
           title="Get in Touch"
           subtitle="Open for research collaborations and opportunities"
@@ -101,28 +114,43 @@ export default function Contact() {
             {contactItems.map((item) => (
               <div
                 key={item.label}
-                className="glass rounded-2xl p-5 hover:border-accent/20 transition-all duration-300 group"
+                className={`glass rounded-2xl p-5 transition-all duration-300 group ${
+                  item.color === "cyan"
+                    ? "glass-cyan"
+                    : item.color === "violet"
+                    ? "glass-violet"
+                    : "glass-cyan"
+                }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-xl bg-accent/10 text-accent-light">
+                    <div
+                      className={`p-2.5 rounded-xl ${
+                        item.color === "cyan"
+                          ? "bg-cyan-DEFAULT/10 text-cyan-light"
+                          : item.color === "violet"
+                          ? "bg-violet-DEFAULT/10 text-violet-light"
+                          : "bg-emerald-DEFAULT/10 text-emerald-light"
+                      }`}
+                    >
                       <item.icon className="w-5 h-5" />
                     </div>
                     <div>
                       <p className="text-xs text-muted uppercase tracking-wider mb-0.5">
                         {item.label}
                       </p>
-                      {item.href ?
+                      {item.href ? (
                         <a
                           href={item.href}
-                          className="text-foreground hover:text-accent-light transition-colors text-sm font-medium"
+                          className="text-foreground hover:text-cyan-light transition-colors text-sm font-medium"
                         >
                           {item.value}
                         </a>
-                      : <p className="text-foreground text-sm font-medium">
+                      ) : (
+                        <p className="text-foreground text-sm font-medium">
                           {item.value}
                         </p>
-                      }
+                      )}
                     </div>
                   </div>
                   {item.label === "Email" && (
@@ -132,16 +160,17 @@ export default function Contact() {
                       title="Copy email"
                     >
                       <AnimatePresence mode="wait">
-                        {copied ?
+                        {copied ? (
                           <motion.div
                             key="check"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             exit={{ scale: 0 }}
                           >
-                            <Check className="w-4 h-4 text-emerald-400" />
+                            <Check className="w-4 h-4 text-emerald-light" />
                           </motion.div>
-                        : <motion.div
+                        ) : (
+                          <motion.div
                             key="copy"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
@@ -149,7 +178,7 @@ export default function Contact() {
                           >
                             <Copy className="w-4 h-4" />
                           </motion.div>
-                        }
+                        )}
                       </AnimatePresence>
                     </button>
                   )}
@@ -172,23 +201,25 @@ export default function Contact() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block glass rounded-2xl p-5 hover:border-accent/20 transition-all duration-300 group"
+                className={`block glass rounded-2xl p-5 transition-all duration-300 group border border-transparent ${
+                  socialColors[item.label] || "hover:bg-white/5"
+                }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-xl bg-accent/10 text-accent-light group-hover:bg-accent/15 transition-colors">
+                    <div className="p-2.5 rounded-xl bg-white/5 text-muted-light group-hover:text-foreground transition-colors">
                       <item.icon className="w-5 h-5" />
                     </div>
                     <div>
                       <p className="text-xs text-muted uppercase tracking-wider mb-0.5">
                         {item.label}
                       </p>
-                      <p className="text-foreground text-sm font-medium group-hover:text-accent-light transition-colors">
+                      <p className="text-foreground text-sm font-medium group-hover:text-inherit transition-colors">
                         {item.handle}
                       </p>
                     </div>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ExternalLink className="w-4 h-4 text-muted opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
               </a>
             ))}
@@ -196,7 +227,7 @@ export default function Contact() {
             {/* Quick CTA */}
             <a
               href={`mailto:${personalInfo.email}`}
-              className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-accent hover:bg-accent-light text-white rounded-2xl font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 mt-6"
+              className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-gradient-to-r from-cyan-DEFAULT to-violet-DEFAULT hover:from-cyan-light hover:to-violet-light text-white rounded-2xl font-medium text-sm transition-all duration-300 hover:shadow-glow-cyan mt-6 hover:scale-[1.02]"
             >
               <Send className="w-4 h-4" />
               Send Me an Email

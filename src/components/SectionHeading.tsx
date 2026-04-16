@@ -23,18 +23,20 @@ export default function SectionHeading({
       className="mb-12 md:mb-16"
     >
       <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 rounded-lg glass">
-          <Icon className="w-5 h-5 text-accent-light" />
+        <div className="p-2.5 rounded-xl bg-gradient-to-br from-cyan-DEFAULT/10 to-violet-DEFAULT/10 border border-cyan-DEFAULT/10">
+          <Icon className="w-5 h-5 text-cyan-light" />
         </div>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
           {title}
         </h2>
       </div>
       {subtitle && (
-        <p className="text-muted-light text-base md:text-lg ml-12">
+        <p className="text-muted-light text-base md:text-lg ml-[52px]">
           {subtitle}
         </p>
       )}
+      {/* Gradient underline */}
+      <div className="mt-4 ml-[52px] h-px w-20 bg-gradient-to-r from-cyan-DEFAULT via-violet-DEFAULT to-transparent rounded-full" />
     </motion.div>
   );
 }

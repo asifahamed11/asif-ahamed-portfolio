@@ -1,15 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, Award, FileText, Users, Presentation } from "lucide-react";
-import { publications, type Publication } from "@/lib/data";
+import { useContent } from "@/lib/content-provider";
+import { type Publication } from "@/lib/data";
 import SectionHeading from "./SectionHeading";
 
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.08 },
   },
 };
 
@@ -17,6 +19,15 @@ const itemVariants = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
+
+type FilterType = "all" | "awarded" | "accepted" | "published";
+
+const filters: { label: string; value: FilterType }[] = [
+  { label: "All", value: "all" },
+  { label: "Awarded", value: "awarded" },
+  { label: "Published", value: "published" },
+  { label: "Accepted", value: "accepted" },
+];
 
 function getTypeIcon(type: Publication["type"]) {
   switch (type) {
@@ -44,31 +55,64 @@ function getTypeLabel(type: Publication["type"]) {
   }
 }
 
-function getStatusColor(status: string) {
-  if (status.includes("Awarded")) return "text-amber-300 bg-amber-400/10";
-  if (status.includes("Accepted")) return "text-emerald-400 bg-emerald-400/10";
-  if (status.includes("Published")) return "text-sky-400 bg-sky-400/10";
-  if (status.includes("Presented")) return "text-purple-400 bg-purple-400/10";
-  return "text-muted-light bg-white/5";
+function getStatusStyle(status: string) {
+  if (status.includes("Awarded"))
+    return {
+      text: "text-amber-light",
+      bg: "bg-amber-DEFAULT/10",
+      border: "border-amber-DEFAULT/20",
+      glow: "hover:shadow-glow-amber",
+      hoverBorder: "hover:border-amber-DEFAULT/30",
+    };
+  if (status.includes("Published"))
+    return {
+      text: "text-cyan-light",
+      bg: "bg-cyan-DEFAULT/10",
+      border: "border-cyan-DEFAULT/20",
+      glow: "hover:shadow-glow-cyan",
+      hoverBorder: "hover:border-cyan-DEFAULT/30",
+    };
+  if (status.includes("Accepted"))
+    return {
+      text: "text-emerald-light",
+      bg: "bg-emerald-DEFAULT/10",
+      border: "border-emerald-DEFAULT/20",
+      glow: "",
+      hoverBorder: "hover:border-emerald-DEFAULT/30",
+    };
+  return {
+    text: "text-muted-light",
+    bg: "bg-white/5",
+    border: "",
+    glow: "",
+    hoverBorder: "hover:border-white/15",
+  };
 }
 
 function PublicationCard({ pub }: { pub: Publication }) {
   const TypeIcon = getTypeIcon(pub.type);
   const isAwarded = pub.isAwarded;
+  const style = getStatusStyle(pub.status);
 
   return (
     <motion.div
       variants={itemVariants}
-      className={`glass rounded-2xl p-6 transition-all duration-300 hover:border-white/10 group relative ${
-        isAwarded ? "border-gold/30 hover:border-gold/50" : ""
+      layout
+      className={`glass rounded-2xl p-6 transition-all duration-400 group relative overflow-hidden ${
+        isAwarded ? `border-amber-DEFAULT/20 ${style.glow}` : style.hoverBorder
       }`}
     >
+      {/* Glow effect for awarded */}
+      {isAwarded && (
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-DEFAULT/5 via-transparent to-transparent pointer-events-none" />
+      )}
+
       {/* Award badge */}
       {isAwarded && (
-        <div className="absolute -top-3 right-6">
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-gold/20 border border-gold/30 rounded-full">
-            <Award className="w-3 h-3 text-gold-light" />
-            <span className="text-xs font-semibold text-gold-light">
+        <div className="absolute -top-3 right-6 z-10">
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-DEFAULT/15 border border-amber-DEFAULT/25 rounded-full shimmer">
+            <Award className="w-3 h-3 text-amber-light" />
+            <span className="text-xs font-semibold text-amber-light">
               {pub.awardTitle}
             </span>
           </div>
@@ -76,12 +120,12 @@ function PublicationCard({ pub }: { pub: Publication }) {
       )}
 
       {/* Header */}
-      <div className="flex items-start gap-3 mb-4">
+      <div className="flex items-start gap-3 mb-4 relative">
         <div
           className={`p-2 rounded-lg shrink-0 ${
-            isAwarded ?
-              "bg-gold/10 text-gold-light"
-            : "bg-accent/10 text-accent-light"
+            isAwarded
+              ? "bg-amber-DEFAULT/10 text-amber-light"
+              : "bg-cyan-DEFAULT/10 text-cyan-light"
           }`}
         >
           <TypeIcon className="w-4 h-4" />
@@ -92,12 +136,12 @@ function PublicationCard({ pub }: { pub: Publication }) {
               {getTypeLabel(pub.type)}
             </span>
             {pub.paperId && (
-              <span className="text-xs text-muted">#ID {pub.paperId}</span>
+              <span className="text-xs text-muted font-mono">#ID {pub.paperId}</span>
             )}
           </div>
           <h3
             className={`text-base font-semibold leading-snug ${
-              isAwarded ? "text-gold-light" : "text-foreground"
+              isAwarded ? "text-amber-light" : "text-foreground"
             }`}
           >
             {pub.title}
@@ -123,16 +167,14 @@ function PublicationCard({ pub }: { pub: Publication }) {
           {pub.tags.map((tag) => (
             <span
               key={tag}
-              className="px-2 py-0.5 text-xs rounded-md bg-white/5 text-muted-light"
+              className="px-2 py-0.5 text-xs rounded-md bg-white/5 text-muted-light border border-white/5"
             >
               {tag}
             </span>
           ))}
         </div>
         <span
-          className={`px-2.5 py-0.5 text-xs font-medium rounded-full ${getStatusColor(
-            pub.status,
-          )}`}
+          className={`px-2.5 py-0.5 text-xs font-medium rounded-full ${style.text} ${style.bg} ${style.border} border`}
         >
           {pub.status}
         </span>
@@ -142,20 +184,24 @@ function PublicationCard({ pub }: { pub: Publication }) {
 }
 
 export default function Research() {
-  const awardedPubs = publications.filter((p) => p.isAwarded);
-  const conferencePubs = publications.filter(
-    (p) => p.type === "conference" && !p.isAwarded,
-  );
-  const otherPubs = publications.filter(
-    (p) => p.type === "poster" || p.type === "co-authored",
-  );
+  const { publications } = useContent();
+  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+
+  const filteredPubs = publications.filter((pub) => {
+    if (activeFilter === "all") return true;
+    if (activeFilter === "awarded") return pub.isAwarded;
+    if (activeFilter === "published") return pub.status.includes("Published");
+    if (activeFilter === "accepted")
+      return pub.status.includes("Accepted") && !pub.isAwarded;
+    return true;
+  });
 
   return (
-    <section id="research" className="py-20 md:py-28 px-4 sm:px-6">
+    <section id="research" className="py-20 md:py-28 px-4 sm:px-6 section-glow">
       <div className="max-w-7xl mx-auto">
         <SectionHeading
           title="Research & Publications"
-          subtitle="8 conference publications across AI, Deep Learning & Bioinformatics"
+          subtitle={`${publications.length} conference publications across AI, Deep Learning & Bioinformatics`}
           icon={BookOpen}
         />
 
@@ -165,21 +211,28 @@ export default function Research() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8"
         >
           {[
             {
               label: "Total Papers",
               value: publications.length.toString(),
               icon: FileText,
+              color: "cyan",
             },
-            { label: "Awards", value: "1", icon: Award },
+            {
+              label: "Awards",
+              value: publications.filter((p) => p.isAwarded).length.toString(),
+              icon: Award,
+              color: "amber",
+            },
             {
               label: "Conference Papers",
               value: publications
                 .filter((p) => p.type === "conference")
                 .length.toString(),
               icon: BookOpen,
+              color: "violet",
             },
             {
               label: "Published",
@@ -187,68 +240,75 @@ export default function Research() {
                 .filter(
                   (p) =>
                     p.status.includes("Published") ||
-                    p.status.includes("Accepted"),
+                    p.status.includes("Accepted")
                 )
                 .length.toString(),
               icon: Presentation,
+              color: "emerald",
             },
           ].map((stat) => (
-            <div key={stat.label} className="glass rounded-xl p-4 text-center">
-              <stat.icon className="w-4 h-4 text-accent-light mx-auto mb-2" />
+            <div
+              key={stat.label}
+              className={`glass rounded-xl p-4 text-center transition-all duration-300 hover:border-${stat.color}-DEFAULT/20`}
+            >
+              <stat.icon
+                className={`w-4 h-4 mx-auto mb-2 ${
+                  stat.color === "cyan"
+                    ? "text-cyan-light"
+                    : stat.color === "amber"
+                    ? "text-amber-light"
+                    : stat.color === "violet"
+                    ? "text-violet-light"
+                    : "text-emerald-light"
+                }`}
+              />
               <p className="text-2xl font-bold text-foreground">{stat.value}</p>
               <p className="text-xs text-muted">{stat.label}</p>
             </div>
           ))}
         </motion.div>
 
-        {/* Awarded Publications */}
+        {/* Filter Tabs */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="space-y-4 mb-8"
+          className="flex flex-wrap gap-2 mb-8"
         >
-          {awardedPubs.map((pub) => (
-            <PublicationCard key={pub.id} pub={pub} />
-          ))}
-        </motion.div>
-
-        {/* Conference Papers */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8"
-        >
-          {conferencePubs.map((pub) => (
-            <PublicationCard key={pub.id} pub={pub} />
-          ))}
-        </motion.div>
-
-        {/* Other publications */}
-        {otherPubs.length > 0 && (
-          <>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-px flex-1 bg-border" />
-              <span className="text-xs text-muted uppercase tracking-wider">
-                Poster & Co-authored
-              </span>
-              <div className="h-px flex-1 bg-border" />
-            </div>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+          {filters.map((filter) => (
+            <button
+              key={filter.value}
+              onClick={() => setActiveFilter(filter.value)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                activeFilter === filter.value
+                  ? "bg-gradient-to-r from-cyan-DEFAULT to-violet-DEFAULT text-white shadow-glow-cyan"
+                  : "glass text-muted-light hover:text-foreground hover:bg-white/10"
+              }`}
             >
-              {otherPubs.map((pub) => (
-                <PublicationCard key={pub.id} pub={pub} />
-              ))}
-            </motion.div>
-          </>
+              {filter.label}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Publications Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeFilter}
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+          >
+            {filteredPubs.map((pub) => (
+              <PublicationCard key={pub.id} pub={pub} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {filteredPubs.length === 0 && (
+          <p className="text-center text-muted-light py-12">
+            No publications found for this filter.
+          </p>
         )}
       </div>
     </section>
