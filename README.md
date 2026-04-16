@@ -91,7 +91,7 @@ Manage all portfolio content without touching code.
 | | |
 |---|---|
 | **URL** | `/asif-ahamed-portfolio/admin` |
-| **Password** | `asif2026` |
+| **Password** | `********` |
 
 ### What you can edit:
 - ✏️ Personal information (name, tagline, social links)
