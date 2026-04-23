@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import {
   MapPin, GraduationCap, Calendar, Mail, Github, Linkedin,
   BookOpen, ExternalLink, Code2, Trophy, FileDown, User,
@@ -49,8 +48,9 @@ export default function About() {
           <motion.div variants={itemVariants} className="sm:col-span-2 lg:col-span-1 lg:row-span-2 glass rounded-2xl p-5 sm:p-6 flex flex-col items-center relative overflow-hidden">
             <div className="relative w-36 h-36 sm:w-48 sm:h-48 mb-4 rounded-2xl overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-gold to-mocha rounded-2xl p-[2px]">
-                <div className="w-full h-full rounded-2xl overflow-hidden bg-ivory relative">
-                  <Image src="/asif-sm.jpg" alt={personalInfo.name} fill className="object-cover" priority />
+                <div className="w-full h-full rounded-2xl overflow-hidden bg-ivory">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/asif-ahamed-portfolio/asif-sm.jpg" alt={personalInfo.name} className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>

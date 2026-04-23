@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { FileText, Award, GraduationCap, ChevronDown, BookOpen, Mail } from "lucide-react";
 import { useContent } from "@/lib/content-provider";
 
@@ -116,13 +115,12 @@ export default function Hero() {
           className="mx-auto mb-5 sm:mb-6 w-24 h-24 sm:w-32 sm:h-32 relative"
         >
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gold to-mocha p-[2px] shadow-glow-gold">
-            <div className="w-full h-full rounded-full overflow-hidden bg-ivory relative">
-              <Image
-                src="/asif-sm.jpg"
+            <div className="w-full h-full rounded-full overflow-hidden bg-ivory">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/asif-ahamed-portfolio/asif-sm.jpg"
                 alt={personalInfo.name}
-                fill
-                className="object-cover"
-                priority
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
