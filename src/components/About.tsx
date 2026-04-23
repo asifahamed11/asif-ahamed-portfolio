@@ -125,6 +125,27 @@ export default function About() {
             </div>
           </motion.div>
 
+          {/* Competitive Programming */}
+          <motion.div variants={itemVariants} className="sm:col-span-2 glass rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+            <div className="flex items-start gap-3 sm:gap-4 mb-4">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-mocha/10 text-coffee shrink-0">
+                <Code2 className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-coffee text-[11px] sm:text-xs font-semibold uppercase tracking-wider mb-1">Competitive Programming</p>
+                <h3 className="text-base sm:text-lg font-semibold text-coffee">Codeforces</h3>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-coffee/5 border border-coffee/8 text-xs font-medium text-mocha">
+                Max Rating: 809 (Newbie)
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-coffee/5 border border-coffee/8 text-xs font-medium text-mocha">
+                Problems Solved: 45+
+              </span>
+            </div>
+          </motion.div>
+
           {/* Social Links */}
           <motion.div variants={itemVariants} className="sm:col-span-2 glass rounded-2xl p-5 sm:p-6">
             <p className="text-mocha text-xs uppercase tracking-wider mb-3 sm:mb-4">Connect</p>
