@@ -50,7 +50,7 @@ export default function About() {
             <div className="relative w-36 h-36 sm:w-48 sm:h-48 mb-4 rounded-2xl overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-gold to-mocha rounded-2xl p-[2px]">
                 <div className="w-full h-full rounded-2xl overflow-hidden bg-ivory relative">
-                  <Image src="https://raw.githubusercontent.com/asifahamed11/asif-ahamed-portfolio/refs/heads/main/asif.jpg" alt={personalInfo.name} fill className="object-cover" priority />
+                  <Image src="https://raw.githubusercontent.com/asifahamed11/asif-ahamed-portfolio/refs/heads/main/asif-sm.jpg" alt={personalInfo.name} fill className="object-cover" priority />
                 </div>
               </div>
             </div>
