@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LucideIcon } from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 
 interface SectionHeadingProps {
   title: string;
@@ -9,34 +9,25 @@ interface SectionHeadingProps {
   icon: LucideIcon;
 }
 
-export default function SectionHeading({
-  title,
-  subtitle,
-  icon: Icon,
-}: SectionHeadingProps) {
+export default function SectionHeading({ title, subtitle, icon: Icon }: SectionHeadingProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="mb-12 md:mb-16"
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="mb-10 sm:mb-12"
     >
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2.5 rounded-xl bg-gradient-to-br from-cyan-DEFAULT/10 to-violet-DEFAULT/10 border border-cyan-DEFAULT/10">
-          <Icon className="w-5 h-5 text-cyan-light" />
+      <div className="flex items-center gap-3 mb-2">
+        <div className="p-2 rounded-lg bg-gold/10 text-gold">
+          <Icon className="w-5 h-5" />
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
-          {title}
-        </h2>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-coffee">{title}</h2>
       </div>
       {subtitle && (
-        <p className="text-muted-light text-base md:text-lg ml-[52px]">
-          {subtitle}
-        </p>
+        <p className="text-mocha text-xs sm:text-sm ml-12">{subtitle}</p>
       )}
-      {/* Gradient underline */}
-      <div className="mt-4 ml-[52px] h-px w-20 bg-gradient-to-r from-cyan-DEFAULT via-violet-DEFAULT to-transparent rounded-full" />
+      <div className="mt-3 sm:mt-4 ml-12 w-10 sm:w-12 h-0.5 bg-gold/30 rounded-full" />
     </motion.div>
   );
 }

@@ -2,26 +2,9 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Github,
-  Linkedin,
-  BookOpen,
-  Copy,
-  Check,
-  ExternalLink,
-  Send,
-} from "lucide-react";
+import { Mail, Phone, MapPin, Github, Linkedin, BookOpen, Copy, Check, ExternalLink, Send } from "lucide-react";
 import { useContent } from "@/lib/content-provider";
 import SectionHeading from "./SectionHeading";
-
-const socialColors: Record<string, string> = {
-  GitHub: "hover:bg-white/10 hover:text-white hover:border-white/15",
-  LinkedIn: "hover:bg-[#0077b5]/10 hover:text-[#0077b5] hover:border-[#0077b5]/20",
-  "Google Scholar": "hover:bg-[#4285f4]/10 hover:text-[#4285f4] hover:border-[#4285f4]/20",
-};
 
 export default function Contact() {
   const { personalInfo } = useContent();
@@ -33,149 +16,65 @@ export default function Contact() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      const textArea = document.createElement("textarea");
-      textArea.value = personalInfo.email;
-      document.body.appendChild(textArea);
-      textArea.select();
+      const t = document.createElement("textarea");
+      t.value = personalInfo.email;
+      document.body.appendChild(t);
+      t.select();
       document.execCommand("copy");
-      document.body.removeChild(textArea);
+      document.body.removeChild(t);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
   };
 
   const contactItems = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: personalInfo.email,
-      href: `mailto:${personalInfo.email}`,
-      color: "cyan",
-    },
-    {
-      icon: Phone,
-      label: "Phone",
-      value: personalInfo.phone,
-      href: `tel:${personalInfo.phone.replace(/\s/g, "")}`,
-      color: "violet",
-    },
-    {
-      icon: MapPin,
-      label: "Location",
-      value: personalInfo.location,
-      color: "emerald",
-    },
+    { icon: Mail, label: "Email", value: personalInfo.email, href: `mailto:${personalInfo.email}` },
+    { icon: Phone, label: "Phone", value: personalInfo.phone, href: `tel:${personalInfo.phone.replace(/\s/g, "")}` },
+    { icon: MapPin, label: "Location", value: personalInfo.location },
   ];
 
   const socialItems = [
-    {
-      icon: Github,
-      label: "GitHub",
-      href: personalInfo.github,
-      handle: "@asifahamed11",
-    },
-    {
-      icon: Linkedin,
-      label: "LinkedIn",
-      href: personalInfo.linkedin,
-      handle: "asifahamed112",
-    },
-    {
-      icon: BookOpen,
-      label: "Google Scholar",
-      href: personalInfo.scholar,
-      handle: "Asif Ahamed",
-    },
+    { icon: Github, label: "GitHub", href: personalInfo.github, handle: "@asifahamed11" },
+    { icon: Linkedin, label: "LinkedIn", href: personalInfo.linkedin, handle: "asifahamed112" },
+    { icon: BookOpen, label: "Google Scholar", href: personalInfo.scholar, handle: "Asif Ahamed" },
   ];
 
   return (
-    <section id="contact" className="py-20 md:py-28 px-4 sm:px-6 relative">
-      {/* Background glow */}
+    <section id="contact" className="py-16 sm:py-20 md:py-28 px-4 sm:px-6 relative">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-cyan-DEFAULT/5 via-violet-DEFAULT/3 to-transparent blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] sm:w-[600px] h-[200px] sm:h-[300px] bg-gold/[0.03] blur-[100px]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        <SectionHeading
-          title="Get in Touch"
-          subtitle="Open for research collaborations and opportunities"
-          icon={Mail}
-        />
+        <SectionHeading title="Get in Touch" subtitle="Open for research collaborations and opportunities" icon={Mail} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Contact Details */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4"
-          >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="space-y-3 sm:space-y-4">
             {contactItems.map((item) => (
-              <div
-                key={item.label}
-                className={`glass rounded-2xl p-5 transition-all duration-300 group ${
-                  item.color === "cyan"
-                    ? "glass-cyan"
-                    : item.color === "violet"
-                    ? "glass-violet"
-                    : "glass-cyan"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`p-2.5 rounded-xl ${
-                        item.color === "cyan"
-                          ? "bg-cyan-DEFAULT/10 text-cyan-light"
-                          : item.color === "violet"
-                          ? "bg-violet-DEFAULT/10 text-violet-light"
-                          : "bg-emerald-DEFAULT/10 text-emerald-light"
-                      }`}
-                    >
-                      <item.icon className="w-5 h-5" />
+              <div key={item.label} className="glass rounded-2xl p-4 sm:p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className="p-2 sm:p-2.5 rounded-xl bg-gold/10 text-gold shrink-0">
+                      <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <div>
-                      <p className="text-xs text-muted uppercase tracking-wider mb-0.5">
-                        {item.label}
-                      </p>
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs text-mocha uppercase tracking-wider mb-0.5">{item.label}</p>
                       {item.href ? (
-                        <a
-                          href={item.href}
-                          className="text-foreground hover:text-cyan-light transition-colors text-sm font-medium"
-                        >
-                          {item.value}
-                        </a>
+                        <a href={item.href} className="text-coffee hover:text-gold transition-colors text-xs sm:text-sm font-medium truncate block">{item.value}</a>
                       ) : (
-                        <p className="text-foreground text-sm font-medium">
-                          {item.value}
-                        </p>
+                        <p className="text-coffee text-xs sm:text-sm font-medium">{item.value}</p>
                       )}
                     </div>
                   </div>
                   {item.label === "Email" && (
-                    <button
-                      onClick={copyEmail}
-                      className="p-2 rounded-lg hover:bg-white/5 text-muted-light hover:text-foreground transition-all"
-                      title="Copy email"
-                    >
+                    <button onClick={copyEmail} className="p-2 rounded-lg hover:bg-coffee/5 text-mocha hover:text-coffee transition-all shrink-0 min-w-[40px] min-h-[40px] flex items-center justify-center" title="Copy email">
                       <AnimatePresence mode="wait">
                         {copied ? (
-                          <motion.div
-                            key="check"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0 }}
-                          >
-                            <Check className="w-4 h-4 text-emerald-light" />
+                          <motion.div key="check" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+                            <Check className="w-4 h-4 text-gold" />
                           </motion.div>
                         ) : (
-                          <motion.div
-                            key="copy"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0 }}
-                          >
+                          <motion.div key="copy" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
                             <Copy className="w-4 h-4" />
                           </motion.div>
                         )}
@@ -187,50 +86,26 @@ export default function Contact() {
             ))}
           </motion.div>
 
-          {/* Social Links */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4"
-          >
+          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="space-y-3 sm:space-y-4">
             {socialItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`block glass rounded-2xl p-5 transition-all duration-300 group border border-transparent ${
-                  socialColors[item.label] || "hover:bg-white/5"
-                }`}
-              >
+              <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer" className="block glass rounded-2xl p-4 sm:p-5 group border border-transparent hover:border-gold/15 min-h-[60px]">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-xl bg-white/5 text-muted-light group-hover:text-foreground transition-colors">
-                      <item.icon className="w-5 h-5" />
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="p-2 sm:p-2.5 rounded-xl bg-coffee/5 text-mocha group-hover:text-gold group-hover:bg-gold/10 transition-colors">
+                      <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted uppercase tracking-wider mb-0.5">
-                        {item.label}
-                      </p>
-                      <p className="text-foreground text-sm font-medium group-hover:text-inherit transition-colors">
-                        {item.handle}
-                      </p>
+                      <p className="text-[10px] sm:text-xs text-mocha uppercase tracking-wider mb-0.5">{item.label}</p>
+                      <p className="text-coffee text-xs sm:text-sm font-medium">{item.handle}</p>
                     </div>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-muted opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ExternalLink className="w-4 h-4 text-mocha/30 opacity-0 group-hover:opacity-100 transition-all shrink-0" />
                 </div>
               </a>
             ))}
 
-            {/* Quick CTA */}
-            <a
-              href={`mailto:${personalInfo.email}`}
-              className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-gradient-to-r from-cyan-DEFAULT to-violet-DEFAULT hover:from-cyan-light hover:to-violet-light text-white rounded-2xl font-medium text-sm transition-all duration-300 hover:shadow-glow-cyan mt-6 hover:scale-[1.02]"
-            >
-              <Send className="w-4 h-4" />
-              Send Me an Email
+            <a href={`mailto:${personalInfo.email}`} className="flex items-center justify-center gap-2 w-full px-6 py-3.5 sm:py-4 bg-coffee hover:bg-coffee/90 text-ivory rounded-2xl font-medium text-sm transition-all duration-300 hover:shadow-card-hover mt-4 sm:mt-6 active:scale-[0.98] min-h-[48px]">
+              <Send className="w-4 h-4" /> Send Me an Email
             </a>
           </motion.div>
         </div>
