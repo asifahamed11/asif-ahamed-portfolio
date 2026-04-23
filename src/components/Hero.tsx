@@ -118,7 +118,7 @@ export default function Hero() {
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gold to-mocha p-[2px] shadow-glow-gold">
             <div className="w-full h-full rounded-full overflow-hidden bg-ivory relative">
               <Image
-                src="/asif-ahamed-portfolio/asif-sm.jpg"
+                src="/asif-sm.jpg"
                 alt={personalInfo.name}
                 fill
                 className="object-cover"
