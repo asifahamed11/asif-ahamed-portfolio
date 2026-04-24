@@ -86,7 +86,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
           <a
-            href="https://drive.google.com/uc?export=download&id=1lHpOWo6pKdiCdmNFm01LXBD-qrD2cGHz"
+            href="/asif-ahamed-portfolio/CV.pdf"
             download
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gold border border-gold/20 rounded-lg hover:bg-gold/8 transition-all active:scale-95"
           >
