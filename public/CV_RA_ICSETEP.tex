@@ -1,0 +1,176 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[left=0.75in,top=0.6in,right=0.75in,bottom=0.6in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[T1]{fontenc}
+\usepackage{fontawesome5}
+\usepackage[default]{lato}
+
+% Color scheme
+\definecolor{primaryblue}{RGB}{25, 60, 115}
+\definecolor{accentblue}{RGB}{40, 90, 160}
+\definecolor{textgray}{RGB}{60, 60, 60}
+
+% Hyperlink setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryblue,
+    urlcolor=primaryblue,
+    citecolor=primaryblue
+}
+
+\titleformat{\section}
+  {\large\bfseries\color{primaryblue}}
+  {}{0em}{\MakeUppercase}
+  [\vspace{-9pt}\noindent\color{accentblue}\rule{\linewidth}{1.6pt}]
+
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+
+\pagestyle{empty}
+
+\setlist[itemize]{leftmargin=*, noitemsep, topsep=3pt, label=\textbullet}
+\setlist[enumerate]{leftmargin=*, topsep=3pt, noitemsep}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{4pt}
+  \noindent
+  \begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{#1} & \textit{#2} \\
+    \textit{\small #3} & \textit{\small #4} \\
+  \end{tabular*}
+}
+
+\newcommand{\projectHeading}[3]{
+  \vspace{4pt}
+  \noindent
+  \begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{#1} $|$ \textit{#2} & \textbf{#3} \\
+  \end{tabular*}
+}
+
+\begin{document}
+
+%-------------------------
+% HEADER
+%-------------------------
+\begin{center}
+    {\LARGE\bfseries\color{primaryblue} ASIF AHAMED}\\[8pt]
+    \small
+    \faEnvelope\ \href{mailto:asifahamedstudent@gmail.com}{asifahamedstudent@gmail.com} \quad
+    \faPhone\ +880 1770-396222 \\[4pt]
+    \faLinkedin\ \href{https://www.linkedin.com/in/asifahamed112/}{asifahamed112} \quad
+    \faGithub\ \href{https://github.com/asifahamed11}{asifahamed11} \quad
+    \faGraduationCap\ \href{https://scholar.google.com/citations?user=ciEQlLEAAAAJ&hl=en}{Google Scholar} \quad
+    \faGlobe\ \href{https://asifahamed11.github.io/asif-ahamed-portfolio/}{Portfolio}
+\end{center}
+
+%-------------------------
+% EDUCATION
+%-------------------------
+\section*{Education}
+
+\resumeSubheading
+  {Bachelor of Science in Computer Science \& Engineering}{Expected 2026}
+  {Varendra University, Rajshahi, Bangladesh}{CGPA: 3.93 / 4.00 (8th Semester)}
+
+\vspace{2pt}
+\begin{itemize}
+    \item \textbf{Relevant Coursework:} Digital Signal Processing, Microprocessor \& Embedded Systems, Neural Networks \& ML, Data Structures, Linear Algebra
+\end{itemize}
+
+%-------------------------
+% TECHNICAL SKILLS
+%-------------------------
+\section*{Technical Skills}
+
+\begin{itemize}
+    \item \textbf{Languages:} Python, C, C++, Java, JavaScript, PHP, Dart, SQL, LaTeX
+    \item \textbf{ML / DL:} TensorFlow, Keras, PyTorch, Scikit-learn, OpenCV, NumPy, Pandas
+    \item \textbf{Signal \& Image Processing:} Bio-signal analysis, spectral feature extraction, transfer learning, GANs
+    \item \textbf{Embedded:} Microprocessor architecture, embedded C, Arduino, serial protocols
+    \item \textbf{Tools:} Git, GitHub, Linux, Google Colab, Kaggle, QGIS
+\end{itemize}
+
+%-------------------------
+% RESEARCH EXPERIENCE
+%-------------------------
+\section*{Research Experience}
+
+\resumeSubheading
+  {Research Associate -- Environmental AI \& Remote Sensing}{2024 -- Present}
+  {Center for Interdisciplinary Research (CIR), Varendra University $\cdot$ PI: Prof. A.H.M.R. Imon}{}
+
+\begin{itemize}
+    \item Architected \textbf{HeatGAN}, a generative adversarial network that super-resolves 100m satellite thermal signals to 10m resolution, improving spatial detail by 10$\times$ for urban microclimate analysis
+    \item Designed time-series forecasting models (\textbf{LSTM, GRU, Temporal Fusion Transformer}) processing 20+ years of daily hydrological sensor data across 4 river basins
+    \item Analyzed 500+ multi-spectral satellite scenes (Sentinel-1 SAR \& Sentinel-2 optical) using Python and QGIS, mapping land-cover change over 3,000+ km\textsuperscript{2}
+    \item Contributed to \textbf{7 peer-reviewed chapters} (Springer Nature \& CRC Press) as first or co-author
+\end{itemize}
+
+\vspace{6pt}
+\resumeSubheading
+  {Undergraduate Thesis Researcher -- Bioinformatics}{Jan 2025 -- Present}
+  {Varendra University $\cdot$ Supervisor: Dr. Ahammad Hossain}{}
+
+\begin{itemize}
+    \item Engineered a classification pipeline using 5 ensemble ML models (Random Forest, XGBoost, SVM, LightGBM, stacking) on 30,000+ COSMIC genomic variant records
+    \item Extracted 120+ signal-level features from mutation data, achieving 94\%+ accuracy in pathogenicity prediction
+\end{itemize}
+
+%-------------------------
+% SELECTED PUBLICATIONS
+%-------------------------
+\section*{Selected Publications {\small\normalfont\color{textgray}(18 total $\cdot$ 10 conference $\cdot$ 7 chapters $\cdot$ 1 abstract)}}
+
+\begin{enumerate}[label={[\arabic*]}, leftmargin=1.5em]
+    \item \textbf{$\star$ Honourable Mention} -- M. A. Tabassum, \textbf{A. Ahamed} et al., ``Hybrid Ensemble Learning for Somatic Variant Classification,'' \textit{UCICS 2026}
+
+    \item \textbf{A. Ahamed} et al., ``HeatGAN: Downscaling Satellite Thermal Imagery,'' \textit{Springer Nature $\cdot$ Ecological Urbanism}, 2026 [Accepted]
+
+    \item \textbf{A. Ahamed} et al., ``LSTM \& GRU for Flood Management in the GBM Basin,'' \textit{CRC Press}, 2026 [Accepted]
+
+    \item \textbf{A. Ahamed} et al., ``Ensemble Deep Learning for Retinal Disease Classification,'' \textit{IEEE QPAIN 2025} [Published]
+
+    \item \textbf{A. Ahamed} et al., ``Dual-branch Swin-Transformer for Wetland Change Detection,'' \textit{ICWSS 2026} [Presented]
+
+    \item \textbf{A. Ahamed} et al., ``Bone Fracture X-ray Classification via Transfer Learning,'' \textit{UCICS 2025} [Accepted]
+
+    {\small \textit{+ 5 additional first/co-authored conference papers \& book chapters}}
+\end{enumerate}
+
+%-------------------------
+% RELEVANT PROJECTS
+%-------------------------
+\section*{Relevant Projects}
+
+\projectHeading{Skin Lesion Classifier}{Python, TensorFlow, Keras, Flask}{Medical AI}
+\begin{itemize}
+    \item Trained a MobileNet CNN on 10,015 dermoscopic images (HAM10000) to classify 7 lesion categories at 89\% accuracy with sub-200ms inference
+\end{itemize}
+
+\projectHeading{Nova Monitor}{Python, Gemini API, Telegram API}{ML Tooling}
+\begin{itemize}
+    \item Designed a real-time training monitor integrating Gemini AI to auto-summarize accuracy/loss, consolidating 100+ epoch logs into a single live Telegram update
+\end{itemize}
+
+\projectHeading{MediLinx}{PHP, MySQL, JavaScript}{Full-Stack Healthcare}
+\begin{itemize}
+    \item Delivered an 8-module healthcare platform with a normalized 12-table MySQL schema and AI-powered health recommendation engine
+\end{itemize}
+
+%-------------------------
+% AWARDS
+%-------------------------
+\section*{Awards \& Activities}
+
+\begin{itemize}
+    \item \textbf{Honourable Mention Award} -- UCICS 2026, selected from 150+ submissions
+    \item \textbf{18 publications:} 10 conference papers (3 IEEE) + 7 chapters in internationally peer-reviewed edited volumes
+    \item \textbf{Competitive Programming:} 45+ problems solved on Codeforces (Max Rating 809) \& LeetCode
+\end{itemize}
+
+\end{document}
+
