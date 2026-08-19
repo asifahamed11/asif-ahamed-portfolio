@@ -23,10 +23,10 @@ export const personalInfo = {
 export const education = {
   institution: "Varendra University, Rajshahi",
   degree: "B.Sc. in Computer Science and Engineering",
-  cgpa: "3.93",
+  cgpa: "3.94",
   maxCgpa: "4.00",
-  semester: "8th Semester",
-  expectedGraduation: "2026",
+  status: "Graduated",
+  graduationYear: "2026",
 };
 
 export interface Milestone {
@@ -49,9 +49,9 @@ export const milestones: Milestone[] = [
   },
   {
     year: "2026",
-    title: "B.Sc. Graduation Candidate",
+    title: "B.Sc. in Computer Science & Engineering",
     organization: "Varendra University",
-    description: "Completing the final undergraduate semester with a 3.93 out of 4.00 cumulative GPA.",
+    description: "Graduated with a 3.94 out of 4.00 cumulative GPA in Computer Science and Engineering.",
     badge: "Academic Honor",
     type: "academic",
   },

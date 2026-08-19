@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { Newsreader, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ContentProvider } from "@/lib/content-provider";
+import { ThemeProvider } from "@/lib/theme-provider";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",
+  adjustFontFallback: false,
 });
 
 const inter = Inter({
@@ -92,23 +94,39 @@ const jsonLd = {
   ],
 };
 
+const themeScript = `
+  (function() {
+    try {
+      var stored = localStorage.getItem('asif-theme-preference');
+      if (stored === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light scroll-smooth">
+    <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body
-        className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#FAFAF7] text-[#1C1917] selection:bg-amber-100 selection:text-amber-950`}
+        className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#FAFAF7] dark:bg-[#201F1D] text-[#1C1917] dark:text-[#EDE8E1]`}
       >
-        <ContentProvider>{children}</ContentProvider>
+        <ThemeProvider>
+          <ContentProvider>{children}</ContentProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
