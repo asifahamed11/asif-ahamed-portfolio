@@ -1,146 +1,99 @@
-<div align="center">
+# Asif Ahamed — Portfolio
 
-# ✨ Asif Ahamed — Portfolio
+Personal academic and software portfolio built with Next.js 14, React 18, and Tailwind CSS. Features research publications across deep learning, bioinformatics, and environmental data analysis, alongside selected software engineering projects.
 
-**Software Engineer & AI Researcher**
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-FF0055?style=flat-square&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+[![Deploy](https://img.shields.io/badge/GitHub_Pages-Live-22c55e?style=flat-square&logo=github&logoColor=white)](https://asifahamed11.github.io/asif-ahamed-portfolio/)
 
-A premium personal portfolio built with Next.js, featuring a warm earthy design and 16 publications spanning AI, Deep Learning & Environmental Science.
+## Live Demo
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-FF0055?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
-[![Deploy](https://img.shields.io/badge/GitHub_Pages-Live-22c55e?style=for-the-badge&logo=github&logoColor=white)](https://asifahamed11.github.io/asif-ahamed-portfolio/)
+- **Production Site:** [https://asifahamed11.github.io/asif-ahamed-portfolio/](https://asifahamed11.github.io/asif-ahamed-portfolio/)
 
-</div>
+## Color Palette
 
----
+The interface uses a modern, high-contrast light theme defined in `tailwind.config.ts` and `src/app/globals.css`:
 
-## 🌐 Live Demo
+| Name | Hex / Class | Usage |
+|:---|:---|:---|
+| **Slate 900** | `#0F172A` | Primary typography, headings, high-contrast action elements |
+| **Slate 600** | `#475569` | Body text, publication summaries, secondary labels |
+| **Indigo 600** | `#4F46E5` | Primary brand accent, interactive links, active pills |
+| **Amber 500** | `#F59E0B` | Academic awards, honors, distinction badges |
+| **Surface** | `#FFFFFF` / `#FAFAFC` | Clean white cards, frosted glass dock, dot pattern canvas |
 
-🔗 **[asifahamed11.github.io/asif-ahamed-portfolio](https://asifahamed11.github.io/asif-ahamed-portfolio/)**
+## Overview of Sections
 
----
+- **Hero & Intro:** Role animation, summary metrics (publications, award count, CGPA), and quick links.
+- **About:** Education details at Varendra University, academic honors, and interactive CGPA progress gauge.
+- **Research & Publications:** Filterable list of conference papers and book chapters with author lists, venues, and topics.
+- **Featured Projects:** GitHub-linked repositories spanning machine learning tools, web applications, and system scripts.
+- **Technical Skills:** Categorized breakdown of programming languages, machine learning frameworks, web libraries, and tools.
+- **Contact:** Direct email action, clipboard copy, and academic/coding profiles (Google Scholar, LinkedIn, GitHub, Codeforces, LeetCode).
 
-## 🎨 Design
+## Tech Stack
 
-The portfolio uses a curated **4-color warm palette**:
+- **Framework:** Next.js 14 (App Router, Static HTML Export)
+- **Language:** TypeScript 5
+- **Styling:** Tailwind CSS 3.4
+- **Animations:** Framer Motion 12, HTML5 Canvas API
+- **Icons:** Lucide React
+- **Hosting:** GitHub Pages via GitHub Actions workflow
 
-| Swatch | Hex | Role |
-|--------|-----|------|
-| 🟠 | `#ED7D31` | Primary accent — CTAs, active states, badges |
-| 🟤 | `#6C5F5B` | Warm gray — secondary text, muted elements |
-| ⬛ | `#4F4A45` | Dark gray — backgrounds, surfaces |
-| ⬜ | `#F6F1EE` | Cream — foreground text, highlights |
+## Development Setup
 
----
+### Prerequisites
+- Node.js 18+ (Node.js 20 LTS recommended)
+- npm 9+
 
-## ✨ Features
-
-| Feature | Description |
-|---------|-------------|
-| ⌨️ **Typing Animation** | Rotating role titles with smooth cursor effect |
-| 📊 **Animated CGPA Ring** | SVG circular progress with scroll-triggered animation |
-| 🔬 **Publication Filters** | Filter 16 publications by type — All, Awarded, Conference, Book Chapters |
-| 🃏 **3D Project Cards** | CSS perspective tilt with gradient accent bars |
-| 🧭 **Smart Navbar** | Active section detection on scroll |
-| 📱 **Responsive** | Mobile-first design across all screen sizes |
-| 🚀 **Static Export** | GitHub Pages deployment, zero server dependencies |
-
----
-
-## 📄 Publications
-
-**16 total** — spanning AI, Deep Learning, Bioinformatics & Environmental Science:
-
-- 🏆 **1 Awarded** — UCICS 2026 Honourable Mention
-- 📰 **8 Conference Papers** — IEEE QPAIN 2025, UCICS 2025/2026
-- 📕 **7 Book Chapters** — Springer Nature, CRC Press
-- 📋 **1 Abstract** — ICWSS 2026
-
----
-
-## 🏗️ Tech Stack
-
-```
-Frontend       → Next.js 14 (App Router) + React 18 + TypeScript
-Styling        → TailwindCSS 3.4 + Custom CSS Utilities
-Animations     → Framer Motion 12 + CSS Keyframes + Canvas API
-Icons          → Lucide React
-Deployment     → GitHub Pages (Static Export)
-```
-
----
-
-## 🚀 Getting Started
+### Commands
 
 ```bash
-# Clone
+# Clone the repository
 git clone https://github.com/asifahamed11/asif-ahamed-portfolio.git
 cd asif-ahamed-portfolio
 
-# Install
+# Install dependencies
 npm install
 
-# Dev
+# Start development server
 npm run dev
 
-# Build
+# Run ESLint validation
+npm run lint
+
+# Build static production bundle (outputs to ./out)
 npm run build
 ```
 
-Open [http://localhost:3000/asif-ahamed-portfolio](http://localhost:3000/asif-ahamed-portfolio)
+The local development server runs at `http://localhost:3000/asif-ahamed-portfolio`.
 
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
 ├── app/
-│   ├── fonts/            # Local font files
-│   ├── globals.css       # Design system (4-color palette)
-│   ├── layout.tsx        # Root layout
-│   └── page.tsx          # Main portfolio page
+│   ├── fonts/            # Local typography assets
+│   ├── globals.css       # Design tokens, keyframes, utility classes
+│   ├── layout.tsx        # Metadata, OpenGraph, JSON-LD Schema.org setup
+│   └── page.tsx          # Single-page layout assembly
 ├── components/
-│   ├── About.tsx         # Bento grid with CGPA ring
-│   ├── AnimatedSection.tsx
-│   ├── Contact.tsx       # Contact info & socials
-│   ├── Footer.tsx        # Footer with gradient accent
-│   ├── Hero.tsx          # Canvas particles + typing animation
-│   ├── Navbar.tsx        # Scroll-tracking navbar
-│   ├── Projects.tsx      # 3D tilt project cards
-│   ├── Research.tsx      # Filterable publications (16 papers)
-│   ├── SectionHeading.tsx
-│   └── Skills.tsx        # Category-based skill tags
+│   ├── About.tsx         # Bio card, education details, CGPA gauge
+│   ├── Contact.tsx       # Contact methods and social links
+│   ├── Footer.tsx        # Footer and scroll-to-top button
+│   ├── Hero.tsx          # Canvas particle background and intro header
+│   ├── Navbar.tsx        # Section-tracking sticky header
+│   ├── Projects.tsx      # Project grid with 3D hover effects
+│   ├── Research.tsx      # Filterable publications catalogue
+│   ├── SectionHeading.tsx# Shared section title component
+│   └── Skills.tsx        # Grouped technical skill tags
 └── lib/
-    ├── content-provider.tsx
-    └── data.ts           # All portfolio content & types
+    ├── content-provider.tsx # Context provider with localStorage sync
+    └── data.ts              # Centralized data model and records
 ```
 
----
+## License
 
-## 📜 Scripts
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Development server |
-| `npm run build` | Production build |
-| `npm run start` | Serve production locally |
-| `npm run lint` | ESLint checks |
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-<div align="center">
-
-Built with ❤️ by **[Asif Ahamed](https://github.com/asifahamed11)**
-
-⭐ Star this repo if you found it helpful!
-
-</div>
+This project is licensed under the [MIT License](LICENSE).

@@ -2,34 +2,35 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useContent } from "@/lib/content-provider";
 
 const navItems = [
   { label: "About", href: "#about" },
   { label: "Research", href: "#research" },
   { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
+  { label: "Toolkit", href: "#skills" },
   { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const { personalInfo } = useContent();
   const [activeSection, setActiveSection] = useState("");
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
       const sections = navItems.map((item) => item.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
-        if (el && el.getBoundingClientRect().top <= 120) {
+        if (el && el.getBoundingClientRect().top <= 140) {
           setActiveSection(sections[i]);
           break;
         }
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -42,94 +43,102 @@ export default function Navbar() {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-ivory/90 backdrop-blur-xl border-b border-coffee/5 shadow-sm"
-          : "bg-transparent"
-      }`}
-    >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-        <a href="#hero" className="flex items-center gap-2 sm:gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/15 flex items-center justify-center text-gold font-bold text-sm group-hover:bg-gold/20 transition-colors">
-            A
-          </div>
-          <span className="text-coffee font-semibold text-sm hidden sm:block">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#FAFAF7]/85 backdrop-blur-md border-b border-[#E7E5E0] transition-all">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+        {/* Brand / Name */}
+        <a
+          href="#hero"
+          className="flex items-center gap-2 group text-stone-900 hover:text-stone-600 transition-colors"
+        >
+          <span className="font-serif italic text-lg sm:text-xl font-bold tracking-tight">
             Asif Ahamed
+          </span>
+          <span className="hidden sm:inline-block text-xs font-mono text-stone-400">
+            / Rajshahi, BD
           </span>
         </a>
 
-        <div className="hidden md:flex items-center gap-1">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-lg ${
-                activeSection === item.href.slice(1)
-                  ? "text-gold"
-                  : "text-mocha hover:text-coffee"
-              }`}
-            >
-              {item.label}
-              {activeSection === item.href.slice(1) && (
-                <motion.div
-                  layoutId="activeSection"
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-gold rounded-full"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-            </a>
-          ))}
-        </div>
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-stone-600">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.href.slice(1);
+            return (
+              <a
+                key={item.label}
+                href={item.href}
+                className={`transition-colors py-1 ${
+                  isActive
+                    ? "text-stone-900 font-semibold border-b-2 border-stone-900"
+                    : "hover:text-stone-900"
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
+        </nav>
 
-        <div className="flex items-center gap-2">
+        {/* Right CTA / Resume */}
+        <div className="flex items-center gap-3">
           <a
-            href="/asif-ahamed-portfolio/CV.pdf"
+            href={personalInfo.cvUrl || "/CV.pdf"}
             download
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gold border border-gold/20 rounded-lg hover:bg-gold/8 transition-all active:scale-95"
+            aria-label="Download Asif Ahamed's CV"
+            className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-stone-700 hover:text-stone-900 px-3 py-1.5 rounded-lg border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50 transition-all active:scale-95 shadow-xs"
           >
-            <Download className="w-3 h-3" />
-            CV
+            <span>Curriculum Vitae</span>
+            <ArrowUpRight className="w-3.5 h-3.5 text-stone-400" />
           </a>
+
+          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-coffee/5 text-mocha min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="md:hidden p-2 rounded-lg hover:bg-stone-100 text-stone-700 transition-colors"
             aria-label="Toggle menu"
           >
             {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
-      </nav>
+      </div>
 
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-ivory/95 backdrop-blur-xl border-b border-coffee/5"
+            className="md:hidden border-b border-stone-200 bg-[#FAFAF7] px-4 py-4 overflow-hidden"
           >
-            <div className="px-4 py-3 flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
                   onClick={() => setIsMobileOpen(false)}
-                  className={`px-4 py-3 text-sm rounded-lg transition-colors min-h-[44px] flex items-center ${
+                  className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                     activeSection === item.href.slice(1)
-                      ? "text-gold bg-gold/8"
-                      : "text-mocha hover:text-coffee hover:bg-coffee/5"
+                      ? "bg-stone-200/80 text-stone-900 font-semibold"
+                      : "text-stone-600 hover:text-stone-900 hover:bg-stone-100"
                   }`}
                 >
                   {item.label}
                 </a>
               ))}
+              <div className="pt-2 mt-1 border-t border-stone-200">
+                <a
+                  href={personalInfo.cvUrl || "/CV.pdf"}
+                  download
+                  className="flex items-center justify-center gap-1.5 w-full py-2.5 bg-stone-900 text-white rounded-lg text-xs font-semibold"
+                >
+                  <span>Download Curriculum Vitae (PDF)</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-stone-400" />
+                </a>
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }

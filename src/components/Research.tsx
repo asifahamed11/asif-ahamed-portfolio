@@ -1,209 +1,282 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Award, FileText, Users, Presentation, BookMarked } from "lucide-react";
+import { useState, useMemo } from "react";
+import {
+  Search, Copy, Check, Code, X, Award, ChevronDown, ChevronUp
+} from "lucide-react";
 import { useContent } from "@/lib/content-provider";
 import { type Publication } from "@/lib/data";
-import SectionHeading from "./SectionHeading";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
-};
-const itemVariants = {
-  hidden: { opacity: 0, y: 25, scale: 0.97 },
-  show: {
-    opacity: 1, y: 0, scale: 1,
-    transition: { type: "spring" as const, stiffness: 100, damping: 18 },
-  },
-};
+type FilterCategory = "all" | "awarded" | "bioinformatics" | "vision" | "remote-sensing" | "book-chapter";
 
-type FilterType = "all" | "awarded" | "conference" | "book-chapter";
-const filters: { label: string; value: FilterType }[] = [
-  { label: "All", value: "all" },
-  { label: "Awarded", value: "awarded" },
-  { label: "Conference", value: "conference" },
-  { label: "Book Chapters", value: "book-chapter" },
-];
+function PublicationRow({ pub, isExpanded, onToggle }: { pub: Publication; isExpanded: boolean; onToggle: () => void }) {
+  const [copiedType, setCopiedType] = useState<"apa" | "bibtex" | null>(null);
 
-function getTypeIcon(type: Publication["type"]) {
-  switch (type) {
-    case "conference": return FileText;
-    case "book-chapter": return BookMarked;
-    case "abstract": case "poster": return Presentation;
-    case "co-authored": return Users;
-    default: return FileText;
-  }
-}
+  const copyAPA = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const citation = `${pub.authors ? pub.authors + ". " : ""}"${pub.title}." ${pub.conference ? pub.conference + ". " : ""}(${pub.status}).`;
+    navigator.clipboard.writeText(citation);
+    setCopiedType("apa");
+    setTimeout(() => setCopiedType(null), 2000);
+  };
 
-function getTypeLabel(type: Publication["type"]) {
-  switch (type) {
-    case "conference": return "Conference Paper";
-    case "book-chapter": return "Book Chapter";
-    case "abstract": return "Abstract";
-    case "poster": return "Poster";
-    case "co-authored": return "Co-authored";
-    default: return "Publication";
-  }
-}
-
-function getStatusStyle(status: string) {
-  if (status.includes("Awarded")) return { text: "text-gold", bg: "bg-gold/10", border: "border-gold/20" };
-  if (status.includes("Published")) return { text: "text-coffee", bg: "bg-coffee/8", border: "border-coffee/12" };
-  if (status.includes("Accepted")) return { text: "text-mocha", bg: "bg-mocha/8", border: "border-mocha/12" };
-  if (status.includes("Submitted")) return { text: "text-mocha/70", bg: "bg-mocha/5", border: "border-mocha/8" };
-  return { text: "text-mocha", bg: "bg-coffee/5", border: "border-coffee/8" };
-}
-
-function PublicationCard({ pub }: { pub: Publication }) {
-  const TypeIcon = getTypeIcon(pub.type);
-  const isAwarded = pub.isAwarded;
-  const style = getStatusStyle(pub.status);
+  const copyBibTeX = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const bib = pub.bibtex || `@article{asif2026pub${pub.id},\n  title={${pub.title}},\n  author={${pub.authors || "Ahamed, Asif"}},\n  year={2026}\n}`;
+    navigator.clipboard.writeText(bib);
+    setCopiedType("bibtex");
+    setTimeout(() => setCopiedType(null), 2000);
+  };
 
   return (
-    <motion.div
-      variants={itemVariants}
-      layout
-      whileHover={{ y: -3, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-      className={`glass rounded-2xl transition-colors duration-300 group relative ${isAwarded ? "glass-accent pt-3 px-4 sm:px-6 pb-4 sm:pb-6" : "p-4 sm:p-6"}`}
+    <div
+      className={`border rounded-xl transition-all duration-150 ${
+        pub.isAwarded
+          ? "border-amber-300 bg-amber-50/20"
+          : isExpanded
+          ? "border-stone-400 bg-stone-50/70 shadow-xs"
+          : "border-stone-200 bg-white hover:border-stone-300 hover:bg-stone-50/40"
+      }`}
     >
-      {isAwarded && (
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-          className="flex justify-end mb-3 relative z-10"
-        >
-          <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-gold/10 border border-gold/20 rounded-full animate-border-glow">
-            <Award className="w-3 h-3 text-gold" />
-            <span className="text-[10px] sm:text-xs font-semibold text-gold">{pub.awardTitle}</span>
+      {/* Main Clickable Summary Row */}
+      <div
+        onClick={onToggle}
+        className="p-3 sm:p-4 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none"
+      >
+        <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+          {/* Left Venue Pill */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 shrink-0">
+            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-stone-100 text-stone-700 border border-stone-200">
+              {pub.venuePublisher || "IEEE"}
+            </span>
+            {pub.paperId && (
+              <span className="text-[10px] font-mono text-stone-400">
+                #{pub.paperId}
+              </span>
+            )}
           </div>
-        </motion.div>
+
+          {/* Center Title & Award */}
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="text-xs sm:text-sm font-bold text-stone-900 leading-snug line-clamp-2 sm:line-clamp-1">
+                {pub.title}
+              </h3>
+              {pub.isAwarded && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 shrink-0">
+                  <Award className="w-3 h-3 text-amber-600" />
+                  <span>{pub.awardTitle}</span>
+                </span>
+              )}
+            </div>
+            {pub.authors && (
+              <p className="text-[11px] text-stone-500 truncate mt-0.5">
+                {pub.authors}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Right Actions & Expand Icon */}
+        <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+          <button
+            onClick={copyAPA}
+            className="px-2 py-1 rounded text-[11px] font-mono text-stone-600 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 transition-colors flex items-center gap-1"
+            title="Copy APA Citation"
+          >
+            {copiedType === "apa" ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+            <span className="hidden sm:inline">APA</span>
+          </button>
+
+          <button
+            onClick={copyBibTeX}
+            className="px-2 py-1 rounded text-[11px] font-mono text-stone-600 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 transition-colors flex items-center gap-1"
+            title="Copy BibTeX Citation"
+          >
+            {copiedType === "bibtex" ? <Check className="w-3 h-3 text-emerald-600" /> : <Code className="w-3 h-3" />}
+            <span className="hidden sm:inline">BibTeX</span>
+          </button>
+
+          <div className="p-1 text-stone-400">
+            {isExpanded ? <ChevronUp className="w-4 h-4 text-stone-700" /> : <ChevronDown className="w-4 h-4" />}
+          </div>
+        </div>
+      </div>
+
+      {/* Expandable Drawer Details */}
+      {isExpanded && (
+        <div className="px-3 sm:px-4 pb-4 pt-1 border-t border-stone-200/80 text-xs text-stone-700 space-y-2.5">
+          {pub.conference && (
+            <div>
+              <span className="font-semibold text-stone-900">Conference / Publication:</span>{" "}
+              <span className="text-indigo-700 font-medium">{pub.conference}</span>
+            </div>
+          )}
+
+          {pub.authors && (
+            <div>
+              <span className="font-semibold text-stone-900">Complete Authors:</span>{" "}
+              <span className="text-stone-600">{pub.authors}</span>
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {pub.tags.map((t) => (
+              <span key={t} className="px-2 py-0.5 rounded bg-stone-100 text-stone-600 text-[10px]">
+                {t}
+              </span>
+            ))}
+            <span className="px-2 py-0.5 rounded bg-stone-200/80 text-stone-700 font-mono text-[10px]">
+              Status: {pub.status}
+            </span>
+          </div>
+        </div>
       )}
-
-      <div className="flex items-start gap-2.5 sm:gap-3 mb-3 sm:mb-4">
-        <motion.div
-          whileHover={{ rotate: 10, scale: 1.1 }}
-          transition={{ type: "spring", stiffness: 400, damping: 15 }}
-          className={`p-1.5 sm:p-2 rounded-lg shrink-0 ${isAwarded ? "bg-gold/10 text-gold" : "bg-coffee/5 text-mocha"}`}
-        >
-          <TypeIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-        </motion.div>
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
-            <span className="text-[10px] sm:text-xs text-mocha uppercase tracking-wider">{getTypeLabel(pub.type)}</span>
-            {pub.paperId && <span className="text-[10px] sm:text-xs text-mocha/50 font-mono">#ID {pub.paperId}</span>}
-          </div>
-          <h3 className={`text-sm sm:text-base font-semibold leading-snug ${isAwarded ? "text-gold" : "text-coffee"}`}>{pub.title}</h3>
-        </div>
-      </div>
-
-      {pub.conference && <p className="text-xs sm:text-sm text-mocha mb-2 sm:mb-3 ml-7 sm:ml-11 line-clamp-2">{pub.conference}</p>}
-      {pub.authors && <p className="text-[11px] sm:text-xs text-mocha/60 mb-2 sm:mb-3 ml-7 sm:ml-11">{pub.authors}</p>}
-
-      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 ml-7 sm:ml-11">
-        <div className="flex flex-wrap gap-1 sm:gap-1.5">
-          {pub.tags.map((tag) => (
-            <span key={tag} className="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs rounded-md bg-coffee/5 text-mocha border border-coffee/5 transition-colors duration-200 hover:bg-gold/10 hover:text-gold hover:border-gold/15">{tag}</span>
-          ))}
-        </div>
-        <span className={`px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-xs font-medium rounded-full ${style.text} ${style.bg} ${style.border} border whitespace-nowrap`}>{pub.status}</span>
-      </div>
-    </motion.div>
+    </div>
   );
 }
 
 export default function Research() {
   const { publications } = useContent();
-  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+  const [activeCategory, setActiveCategory] = useState<FilterCategory>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
-  const filteredPubs = publications.filter((pub) => {
-    if (activeFilter === "all") return true;
-    if (activeFilter === "awarded") return pub.isAwarded;
-    if (activeFilter === "conference") return pub.type === "conference" || pub.type === "abstract";
-    if (activeFilter === "book-chapter") return pub.type === "book-chapter";
-    return true;
-  });
+  const categories = useMemo(() => [
+    { label: "All Papers", value: "all" as FilterCategory, count: publications.length },
+    { label: "Awarded", value: "awarded" as FilterCategory, count: publications.filter((p) => p.isAwarded).length },
+    { label: "Bioinformatics", value: "bioinformatics" as FilterCategory, count: publications.filter((p) => p.topicDomain === "bioinformatics").length },
+    { label: "Medical Vision", value: "vision" as FilterCategory, count: publications.filter((p) => p.topicDomain === "vision").length },
+    { label: "Remote Sensing", value: "remote-sensing" as FilterCategory, count: publications.filter((p) => p.topicDomain === "remote-sensing").length },
+    { label: "Book Chapters", value: "book-chapter" as FilterCategory, count: publications.filter((p) => p.type === "book-chapter").length },
+  ], [publications]);
 
-  const conferencePapers = publications.filter((p) => p.type === "conference" || p.type === "abstract").length;
-  const bookChapters = publications.filter((p) => p.type === "book-chapter").length;
+  const filteredPubs = useMemo(() => {
+    return publications.filter((pub) => {
+      let matchesCategory = true;
+      if (activeCategory === "awarded") matchesCategory = !!pub.isAwarded;
+      else if (activeCategory === "bioinformatics") matchesCategory = pub.topicDomain === "bioinformatics";
+      else if (activeCategory === "vision") matchesCategory = pub.topicDomain === "vision";
+      else if (activeCategory === "remote-sensing") matchesCategory = pub.topicDomain === "remote-sensing";
+      else if (activeCategory === "book-chapter") matchesCategory = pub.type === "book-chapter";
+
+      if (!matchesCategory) return false;
+
+      if (!searchQuery.trim()) return true;
+      const q = searchQuery.toLowerCase();
+      return (
+        pub.title.toLowerCase().includes(q) ||
+        (pub.authors && pub.authors.toLowerCase().includes(q)) ||
+        (pub.conference && pub.conference.toLowerCase().includes(q)) ||
+        pub.tags.some((t) => t.toLowerCase().includes(q))
+      );
+    });
+  }, [publications, activeCategory, searchQuery]);
+
+  // Display limited rows by default unless user searches or toggles showAll
+  const isSearching = searchQuery.trim().length > 0 || activeCategory !== "all";
+  const displayedPubs = isSearching || showAll ? filteredPubs : filteredPubs.slice(0, 6);
 
   return (
-    <section id="research" className="py-16 sm:py-20 md:py-28 px-4 sm:px-6 section-glow">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeading title="Research & Publications" subtitle={`${publications.length} publications across AI, Deep Learning & Environmental Science`} icon={BookOpen} />
+    <section id="research" className="py-12 sm:py-16 px-4 sm:px-6 border-t border-stone-200/80 bg-[#FAFAF7]">
+      <div className="max-w-5xl mx-auto">
+        
+        {/* Compact Header with Instant Search */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
+                Research Publications
+              </h2>
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-stone-200 text-stone-700 font-semibold">
+                {publications.length} Papers
+              </span>
+            </div>
+            <p className="text-xs text-stone-500 mt-0.5">
+              Peer-reviewed articles, conference proceedings & book chapters (IEEE, Springer, CRC Press)
+            </p>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 100, damping: 18 }}
-          className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-6 sm:mb-8"
-        >
-          {[
-            { label: "Total", value: publications.length.toString(), icon: FileText },
-            { label: "Awards", value: publications.filter((p) => p.isAwarded).length.toString(), icon: Award },
-            { label: "Conference", value: conferencePapers.toString(), icon: BookOpen },
-            { label: "Book Chapters", value: bookChapters.toString(), icon: BookMarked },
-          ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, type: "spring", stiffness: 120, damping: 15 }}
-              whileHover={{ y: -3, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-              className="glass rounded-xl p-3 sm:p-4 text-center"
-            >
-              <stat.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 mx-auto mb-1.5 sm:mb-2 text-gold" />
-              <p className="text-xl sm:text-2xl font-bold text-coffee">{stat.value}</p>
-              <p className="text-[10px] sm:text-xs text-mocha">{stat.label}</p>
-            </motion.div>
+          {/* Quick Search */}
+          <div className="relative w-full sm:w-64">
+            <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search 16 papers..."
+              className="w-full pl-8 pr-7 py-1.5 bg-white border border-stone-300 rounded-lg text-xs font-medium text-stone-900 placeholder:text-stone-400 outline-none focus:border-stone-600 transition-all"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Domain Filter Pills */}
+        <div className="flex flex-wrap gap-1.5 pb-4 mb-4 border-b border-stone-200/80">
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat.value;
+            return (
+              <button
+                key={cat.value}
+                onClick={() => { setActiveCategory(cat.value); setShowAll(true); }}
+                className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors flex items-center gap-1.5 ${
+                  isActive
+                    ? "bg-stone-900 text-white"
+                    : "bg-white text-stone-600 hover:text-stone-900 border border-stone-200"
+                }`}
+              >
+                <span>{cat.label}</span>
+                <span className={`text-[9px] font-mono px-1 rounded ${
+                  isActive ? "bg-stone-800 text-stone-300" : "bg-stone-100 text-stone-500"
+                }`}>
+                  {cat.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* High-Density Publications List */}
+        <div className="space-y-2">
+          {displayedPubs.map((pub) => (
+            <PublicationRow
+              key={pub.id}
+              pub={pub}
+              isExpanded={expandedId === pub.id}
+              onToggle={() => setExpandedId(expandedId === pub.id ? null : pub.id)}
+            />
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-wrap gap-2 mb-6 sm:mb-8"
-        >
-          {filters.map((filter) => (
-            <motion.button
-              key={filter.value}
-              onClick={() => setActiveFilter(filter.value)}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 min-h-[40px] relative ${activeFilter === filter.value ? "bg-coffee text-ivory shadow-card" : "glass text-mocha hover:text-coffee"}`}
+        {/* Show More / Show Less Toggle */}
+        {!isSearching && filteredPubs.length > 6 && (
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-stone-100 text-stone-800 text-xs font-semibold rounded-lg border border-stone-300 transition-colors shadow-xs"
             >
-              {filter.label}
-              {activeFilter === filter.value && (
-                <motion.div
-                  layoutId="activeFilter"
-                  className="absolute inset-0 bg-coffee rounded-lg -z-10"
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                />
-              )}
-            </motion.button>
-          ))}
-        </motion.div>
+              <span>{showAll ? "Show Top 6 Papers" : `View All ${filteredPubs.length} Papers`}</span>
+              {showAll ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+          </div>
+        )}
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeFilter}
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            exit={{ opacity: 0, y: -10, transition: { duration: 0.2 } }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4"
-          >
-            {filteredPubs.map((pub) => <PublicationCard key={pub.id} pub={pub} />)}
-          </motion.div>
-        </AnimatePresence>
-
-        {filteredPubs.length === 0 && <p className="text-center text-mocha py-12 text-sm">No publications found for this filter.</p>}
+        {filteredPubs.length === 0 && (
+          <div className="text-center py-8 bg-white rounded-xl border border-stone-200 text-xs text-stone-500">
+            No papers match your search.{" "}
+            <button onClick={() => { setActiveCategory("all"); setSearchQuery(""); }} className="text-indigo-600 underline font-medium">
+              Reset search
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,15 +1,17 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 import {
   personalInfo as defaultPersonalInfo,
   education as defaultEducation,
   publications as defaultPublications,
   projects as defaultProjects,
   skillCategories as defaultSkillCategories,
+  milestones as defaultMilestones,
   type Publication,
   type Project,
   type SkillCategory,
+  type Milestone,
 } from "./data";
 
 interface ContentData {
@@ -18,6 +20,7 @@ interface ContentData {
   publications: Publication[];
   projects: Project[];
   skillCategories: SkillCategory[];
+  milestones: Milestone[];
 }
 
 interface ContentContextType extends ContentData {
@@ -28,14 +31,13 @@ interface ContentContextType extends ContentData {
   hasCustomContent: boolean;
 }
 
-const STORAGE_KEY = "asif-portfolio-content";
-
 const defaultContent: ContentData = {
   personalInfo: defaultPersonalInfo,
   education: defaultEducation,
   publications: defaultPublications,
   projects: defaultProjects,
   skillCategories: defaultSkillCategories,
+  milestones: defaultMilestones,
 };
 
 const ContentContext = createContext<ContentContextType>({
@@ -50,44 +52,15 @@ const ContentContext = createContext<ContentContextType>({
 export function ContentProvider({ children }: { children: React.ReactNode }) {
   const [content, setContent] = useState<ContentData>(defaultContent);
   const [hasCustomContent, setHasCustomContent] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored) as Partial<ContentData>;
-        setContent((prev) => ({ ...prev, ...parsed }));
-        setHasCustomContent(true);
-      }
-    } catch {
-      // If parsing fails, use defaults
-    }
-    setIsLoaded(true);
-  }, []);
 
   const updateContent = useCallback((data: Partial<ContentData>) => {
-    setContent((prev) => {
-      const updated = { ...prev, ...data };
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      } catch {
-        // Storage full or unavailable
-      }
-      return updated;
-    });
+    setContent((prev: ContentData) => ({ ...prev, ...data }));
     setHasCustomContent(true);
   }, []);
 
   const resetContent = useCallback(() => {
     setContent(defaultContent);
     setHasCustomContent(false);
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      // ignore
-    }
   }, []);
 
   const exportContent = useCallback(() => {
@@ -97,10 +70,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   const importContent = useCallback((json: string): boolean => {
     try {
       const parsed = JSON.parse(json) as ContentData;
-      // Basic validation
       if (parsed.personalInfo && parsed.education) {
         setContent({ ...defaultContent, ...parsed });
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultContent, ...parsed }));
         setHasCustomContent(true);
         return true;
       }
@@ -109,11 +80,6 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
       return false;
     }
   }, []);
-
-  // Render children only after loading localStorage to avoid hydration mismatch
-  if (!isLoaded) {
-    return null;
-  }
 
   return (
     <ContentContext.Provider
