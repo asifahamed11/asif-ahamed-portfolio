@@ -124,12 +124,12 @@ export default function Hero() {
 
         {/* Right Column: Floating Portrait & Links (No heavy outer box) */}
         <div className="lg:col-span-4 flex flex-col items-center sm:items-start lg:items-center text-center sm:text-left lg:text-center">
-          <div className="relative w-40 h-40 sm:w-44 sm:h-44 rounded-2xl overflow-hidden bg-stone-100 dark:bg-[#201F1D] border border-stone-200 dark:border-[#3D3B36] mb-3.5 shadow-sm group">
+          <div className="relative w-44 sm:w-48 rounded-2xl overflow-hidden bg-stone-100 dark:bg-[#201F1D] border border-stone-200 dark:border-[#3D3B36] mb-3.5 shadow-sm group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={personalInfo.avatarUrl || "/asif-sm.jpg"}
+              src={personalInfo.avatarUrl || "/asif-sm.jpg?v=2"}
               alt={personalInfo.name}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-auto max-h-56 object-contain rounded-2xl transition-transform duration-300 group-hover:scale-102"
             />
           </div>
 

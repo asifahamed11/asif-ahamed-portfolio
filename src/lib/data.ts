@@ -9,7 +9,7 @@ export const personalInfo = {
   location: "Rajshahi, Bangladesh",
   portfolio: "https://asifahamed11.github.io/",
   siteUrl: "https://asifahamed11.github.io/asif-ahamed-portfolio",
-  avatarUrl: `${basePath}/asif-sm.jpg`,
+  avatarUrl: `${basePath}/asif-sm.jpg?v=2`,
   cvUrl: `${basePath}/CV.pdf`,
   linkedin: "https://www.linkedin.com/in/asifahamed112/",
   github: "https://github.com/asifahamed11",
