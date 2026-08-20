@@ -27,6 +27,7 @@ export const education = {
   maxCgpa: "4.00",
   status: "Graduated",
   graduationYear: "2026",
+  expectedGraduation: "2026",
 };
 
 export interface Milestone {

@@ -49,7 +49,7 @@ export default function About() {
                 <div className="flex items-center gap-2 mt-2 text-xs font-medium text-stone-600">
                   <span className="px-2 py-0.5 bg-white border border-stone-200 rounded-md">CGPA {education.cgpa} / {education.maxCgpa}</span>
                   <span className="text-stone-400">•</span>
-                  <span>Graduating {education.expectedGraduation}</span>
+                  <span>Graduated {education.graduationYear || education.expectedGraduation}</span>
                 </div>
               </div>
 
