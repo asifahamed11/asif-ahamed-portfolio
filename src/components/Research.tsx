@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search, Copy, Check, Code, X, Award, ChevronDown, ChevronUp, BookOpen
+  Copy, Check, Code, Award, ChevronDown, ChevronUp, BookOpen
 } from "lucide-react";
 import { useContent } from "@/lib/content-provider";
 import { type Publication } from "@/lib/data";
 import { copyToClipboard } from "@/lib/utils";
 
-type FilterCategory = "all" | "awarded" | "bioinformatics" | "vision" | "remote-sensing" | "book-chapter";
+type FilterCategory = "all" | "awarded" | "bioinformatics" | "vision" | "remote-sensing" | "ai-ml";
 
 function PublicationRow({ pub, isExpanded, onToggle }: { pub: Publication; isExpanded: boolean; onToggle: () => void }) {
   const [copiedType, setCopiedType] = useState<"apa" | "bibtex" | null>(null);
@@ -30,254 +31,225 @@ function PublicationRow({ pub, isExpanded, onToggle }: { pub: Publication; isExp
   };
 
   return (
-    <div
-      className={`border rounded-xl transition-all duration-150 ${
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.98 }}
+      transition={{ duration: 0.25 }}
+      className={`border rounded-xl transition-all duration-200 ${
         pub.isAwarded
-          ? "border-amber-300/80 dark:border-[#665134]/80 bg-amber-50/20 dark:bg-[#3D3325]/25"
+          ? "border-amber-300/80 dark:border-amber-500/40 bg-amber-50/50 dark:bg-amber-950/20 shadow-2xs"
           : isExpanded
-          ? "border-stone-400 dark:border-[#524F49] bg-stone-50/70 dark:bg-[#292825]/70 shadow-2xs"
-          : "border-stone-200/80 dark:border-[#3D3B36] bg-white/70 dark:bg-[#292825]/40 hover:border-stone-300 dark:hover:border-[#524F49] hover:bg-stone-50/50 dark:hover:bg-[#292825]"
+          ? "border-indigo-200 dark:border-indigo-500/30 bg-[#FFFFFF] dark:bg-[#161A26] shadow-xs"
+          : "border-[#E2DDD4] dark:border-[#23293A] bg-[#FFFFFF] dark:bg-[#12151F] hover:border-indigo-200 dark:hover:border-[#333C52] hover:shadow-2xs"
       }`}
     >
-      {/* Main Row */}
+      {/* Clean Main Row */}
       <div
         onClick={onToggle}
-        className="p-3 sm:p-3.5 cursor-pointer flex items-start justify-between gap-2.5 select-none"
+        className="p-3.5 cursor-pointer flex items-center justify-between gap-3 select-none"
       >
-        <div className="flex items-start gap-2.5 min-w-0 flex-1">
-          {/* Venue Badge */}
-          <div className="flex flex-col gap-0.5 shrink-0 pt-0.5">
-            <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-stone-100 dark:bg-[#201F1D] text-stone-700 dark:text-[#EDE8E1] border border-stone-200 dark:border-[#3D3B36] text-center">
-              {pub.venuePublisher || "IEEE"}
-            </span>
-            {pub.paperId && (
-              <span className="text-[9px] font-mono text-stone-400 dark:text-stone-400 text-center">
-                #{pub.paperId}
-              </span>
-            )}
-          </div>
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+          {/* Venue Badge with Vivid Colors */}
+          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/80 text-center shrink-0">
+            {pub.venuePublisher || "IEEE"}
+          </span>
 
-          {/* Title & Info */}
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <h3 className="text-xs sm:text-sm font-bold text-stone-900 dark:text-[#EDE8E1] leading-snug">
-                {pub.title}
-              </h3>
-              {pub.isAwarded && (
-                <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-amber-100 dark:bg-[#3D3325]/80 text-amber-900 dark:text-[#F3D19E] border border-amber-300 dark:border-[#665134]/80 shrink-0">
-                  <Award className="w-2.5 h-2.5 text-amber-600 dark:text-amber-400" />
-                  <span>{pub.awardTitle}</span>
-                </span>
-              )}
-            </div>
-            {pub.authors && (
-              <p className="text-[11px] text-stone-500 dark:text-[#B8B4AE] truncate mt-0.5">
-                {pub.authors}
-              </p>
+          {/* Title & Award */}
+          <div className="min-w-0 flex-1 flex items-center gap-2 flex-wrap">
+            <h3 className="text-sm sm:text-[15px] font-bold text-[#18181B] dark:text-[#F8FAFC] leading-snug truncate">
+              {pub.title}
+            </h3>
+            {pub.isAwarded && (
+              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 border border-amber-300/80 dark:border-amber-600/50 shrink-0">
+                <Award className="w-2.5 h-2.5 text-amber-600 dark:text-amber-400" />
+                <span>{pub.awardTitle}</span>
+              </span>
             )}
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-1 shrink-0 pt-0.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           <button
             onClick={copyAPA}
-            className="px-1.5 py-0.5 rounded text-[10px] font-mono text-stone-600 dark:text-[#EDE8E1] hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-[#33312C] hover:bg-stone-200 dark:hover:bg-[#3D3B36] transition-colors flex items-center gap-1"
+            className="px-2 py-1 rounded-md text-xs font-mono text-[#52525B] dark:text-[#94A3B8] hover:text-[#18181B] dark:hover:text-white bg-[#EFECE6] dark:bg-[#1D2230] hover:bg-[#E5E0D5] dark:hover:bg-[#2A3144] transition-colors flex items-center gap-1 active:scale-95"
             title="Copy APA Citation"
           >
-            {copiedType === "apa" ? <Check className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-2.5 h-2.5" />}
+            {copiedType === "apa" ? <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3 h-3" />}
             <span className="hidden sm:inline">APA</span>
           </button>
 
           <button
             onClick={copyBibTeX}
-            className="px-1.5 py-0.5 rounded text-[10px] font-mono text-stone-600 dark:text-[#EDE8E1] hover:text-stone-900 dark:hover:text-white bg-stone-100 dark:bg-[#33312C] hover:bg-stone-200 dark:hover:bg-[#3D3B36] transition-colors flex items-center gap-1"
+            className="px-2 py-1 rounded-md text-xs font-mono text-[#52525B] dark:text-[#94A3B8] hover:text-[#18181B] dark:hover:text-white bg-[#EFECE6] dark:bg-[#1D2230] hover:bg-[#E5E0D5] dark:hover:bg-[#2A3144] transition-colors flex items-center gap-1 active:scale-95"
             title="Copy BibTeX Citation"
           >
-            {copiedType === "bibtex" ? <Check className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" /> : <Code className="w-2.5 h-2.5" />}
+            {copiedType === "bibtex" ? <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> : <Code className="w-3 h-3" />}
             <span className="hidden sm:inline">Bib</span>
           </button>
 
-          <div className="p-0.5 text-stone-400">
-            {isExpanded ? <ChevronUp className="w-3.5 h-3.5 text-stone-700 dark:text-[#EDE8E1]" /> : <ChevronDown className="w-3.5 h-3.5" />}
-          </div>
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+            className="p-0.5 text-[#A1A1AA]"
+          >
+            <ChevronDown className="w-4 h-4 text-[#52525B] dark:text-[#F8FAFC]" />
+          </motion.div>
         </div>
       </div>
 
       {/* Expandable Details Drawer */}
-      {isExpanded && (
-        <div className="px-3 pb-3 pt-1.5 border-t border-stone-200/80 dark:border-[#3D3B36] text-[11px] text-stone-700 dark:text-[#B8B4AE] space-y-1.5 bg-stone-50/50 dark:bg-[#201F1D]/50 rounded-b-xl">
-          {pub.conference && (
-            <div>
-              <span className="font-semibold text-stone-900 dark:text-[#EDE8E1]">Venue / Publisher:</span>{" "}
-              <span className="text-amber-800 dark:text-[#E2B77B] font-medium">{pub.conference}</span>
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="overflow-hidden border-t border-[#E2DDD4] dark:border-[#23293A] bg-[#FAF9F5] dark:bg-[#0E1118]"
+          >
+            <div className="p-4 space-y-2 text-xs sm:text-sm text-[#52525B] dark:text-[#94A3B8]">
+              <p>
+                <strong className="text-[#18181B] dark:text-[#F8FAFC]">Venue:</strong> {pub.conference}
+              </p>
+              {pub.authors && (
+                <p>
+                  <strong className="text-[#18181B] dark:text-[#F8FAFC]">Authors:</strong> {pub.authors}
+                </p>
+              )}
+              <div className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px]">
+                {pub.tags.map((t) => (
+                  <span key={t} className="px-2 py-0.5 rounded bg-white dark:bg-[#161A26] border border-[#E2DDD4] dark:border-[#23293A] text-[#52525B] dark:text-[#94A3B8]">
+                    {t}
+                  </span>
+                ))}
+                <span className="px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 font-medium text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/80">
+                  Status: {pub.status}
+                </span>
+              </div>
             </div>
-          )}
-
-          {pub.authors && (
-            <div>
-              <span className="font-semibold text-stone-900 dark:text-[#EDE8E1]">Complete Authors:</span>{" "}
-              <span className="text-stone-600 dark:text-[#B8B4AE]">{pub.authors}</span>
-            </div>
-          )}
-
-          <div className="flex flex-wrap gap-1 pt-1">
-            {pub.tags.map((t) => (
-              <span key={t} className="px-1.5 py-0.2 rounded bg-stone-100 dark:bg-[#201F1D] text-stone-600 dark:text-[#B8B4AE] text-[9px] border border-stone-200/60 dark:border-[#3D3B36]">
-                {t}
-              </span>
-            ))}
-            <span className="px-1.5 py-0.2 rounded bg-stone-200/80 dark:bg-[#33312C] text-stone-700 dark:text-[#EDE8E1] font-mono text-[9px]">
-              Status: {pub.status}
-            </span>
-          </div>
-        </div>
-      )}
-    </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 export default function Research() {
   const { publications } = useContent();
   const [activeCategory, setActiveCategory] = useState<FilterCategory>("all");
-  const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  const categories = useMemo(() => [
-    { label: "All", value: "all" as FilterCategory, count: publications.length },
-    { label: "Awarded", value: "awarded" as FilterCategory, count: publications.filter((p) => p.isAwarded).length },
-    { label: "Bioinformatics", value: "bioinformatics" as FilterCategory, count: publications.filter((p) => p.topicDomain === "bioinformatics").length },
-    { label: "Vision", value: "vision" as FilterCategory, count: publications.filter((p) => p.topicDomain === "vision").length },
-    { label: "Remote Sensing", value: "remote-sensing" as FilterCategory, count: publications.filter((p) => p.topicDomain === "remote-sensing").length },
-    { label: "Chapters", value: "book-chapter" as FilterCategory, count: publications.filter((p) => p.type === "book-chapter").length },
+  // Correctly mapping to pub.topicDomain so counts are accurate!
+  const categories: { label: string; value: FilterCategory; count: number }[] = useMemo(() => [
+    { label: "All", value: "all", count: publications.length },
+    { label: "Awarded", value: "awarded", count: publications.filter((p) => p.isAwarded).length },
+    { label: "Bioinfo", value: "bioinformatics", count: publications.filter((p) => p.topicDomain === "bioinformatics").length },
+    { label: "Vision", value: "vision", count: publications.filter((p) => p.topicDomain === "vision").length },
+    { label: "Sensing", value: "remote-sensing", count: publications.filter((p) => p.topicDomain === "remote-sensing").length },
+    { label: "AI & ML", value: "ai-ml", count: publications.filter((p) => p.topicDomain === "ai-ml").length },
   ], [publications]);
 
-  const filteredPubs = useMemo(() => {
+  const filteredPublications = useMemo(() => {
     return publications.filter((pub) => {
-      let matchesCategory = true;
-      if (activeCategory === "awarded") matchesCategory = !!pub.isAwarded;
-      else if (activeCategory === "bioinformatics") matchesCategory = pub.topicDomain === "bioinformatics";
-      else if (activeCategory === "vision") matchesCategory = pub.topicDomain === "vision";
-      else if (activeCategory === "remote-sensing") matchesCategory = pub.topicDomain === "remote-sensing";
-      else if (activeCategory === "book-chapter") matchesCategory = pub.type === "book-chapter";
-
-      if (!matchesCategory) return false;
-
-      if (!searchQuery.trim()) return true;
-      const q = searchQuery.toLowerCase();
-      return (
-        pub.title.toLowerCase().includes(q) ||
-        (pub.authors && pub.authors.toLowerCase().includes(q)) ||
-        (pub.conference && pub.conference.toLowerCase().includes(q)) ||
-        pub.tags.some((t) => t.toLowerCase().includes(q))
-      );
+      if (activeCategory === "all") return true;
+      if (activeCategory === "awarded") return pub.isAwarded;
+      return pub.topicDomain === activeCategory;
     });
-  }, [publications, activeCategory, searchQuery]);
+  }, [publications, activeCategory]);
 
-  const isSearching = searchQuery.trim().length > 0 || activeCategory !== "all";
-  const displayedPubs = isSearching || showAll ? filteredPubs : filteredPubs.slice(0, 6);
+  const isFiltered = activeCategory !== "all";
+  const displayedPublications = isFiltered || showAll ? filteredPublications : filteredPublications.slice(0, 4);
+
+  const toggleExpand = (id: number) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
 
   return (
-    <section id="research" className="w-full flex flex-col justify-between">
+    <motion.section
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.55 }}
+      id="research"
+      className="w-full flex flex-col justify-between"
+    >
       <div>
-        {/* Minimal Header (No outer container card) */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3.5 pb-2.5 border-b border-stone-200/80 dark:border-[#3D3B36]">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg sm:text-xl font-serif font-bold text-stone-900 dark:text-[#EDE8E1] flex items-center gap-1.5">
-                <BookOpen className="w-4 h-4 text-stone-600 dark:text-stone-400 inline-block" />
-                <span>Research Publications</span>
-              </h2>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-stone-100 dark:bg-[#292825] text-stone-700 dark:text-[#EDE8E1] font-semibold border border-stone-200 dark:border-[#3D3B36]">
-                {publications.length}
-              </span>
-            </div>
-            <p className="text-[11px] text-stone-500 dark:text-[#B8B4AE] mt-0.5">
-              Peer-reviewed articles, conference proceedings & book chapters
-            </p>
+        {/* Minimal Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 pb-2.5 border-b border-[#E2DDD4] dark:border-[#23293A]">
+          <div className="flex items-center gap-2 shrink-0">
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#18181B] dark:text-[#F8FAFC] flex items-center gap-2 whitespace-nowrap">
+              <BookOpen className="w-5 h-5 text-[#52525B] dark:text-[#94A3B8] inline-block shrink-0" />
+              <span>Publications</span>
+            </h2>
+            <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#EFECE6] dark:bg-[#12151F] text-[#18181B] dark:text-[#F8FAFC] font-semibold border border-[#E2DDD4] dark:border-[#23293A]">
+              {publications.length}
+            </span>
           </div>
 
-          {/* Quick Search */}
-          <div className="relative w-full sm:w-52">
-            <Search className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search 16 papers..."
-              className="w-full pl-8 pr-6 py-1 bg-white dark:bg-[#292825] border border-stone-300/80 dark:border-[#3D3B36] rounded-lg text-xs font-medium text-stone-900 dark:text-[#EDE8E1] placeholder:text-stone-400 dark:placeholder:text-[#9E9A93] outline-none focus:border-stone-500 dark:focus:border-[#665134] transition-all shadow-2xs"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 dark:hover:text-white"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            )}
+          {/* Clean Segmented Category Tabs with Sliding Pill */}
+          <div className="flex flex-wrap gap-1 relative">
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat.value;
+              return (
+                <button
+                  key={cat.value}
+                  onClick={() => { setActiveCategory(cat.value); setShowAll(true); }}
+                  className={`relative px-2.5 py-0.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1 ${
+                    isActive
+                      ? "text-white dark:text-[#0B0D13] font-semibold"
+                      : "text-[#52525B] dark:text-[#94A3B8] hover:text-[#18181B] dark:hover:text-[#F8FAFC]"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeResearchPill"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                      className="absolute inset-0 bg-[#18181B] dark:bg-[#F8FAFC] rounded-md shadow-2xs z-0"
+                    />
+                  )}
+                  <span className="relative z-10">{cat.label}</span>
+                  <span className={`relative z-10 text-[10px] font-mono px-1 rounded ${
+                    isActive ? "bg-[#3F3F46] dark:bg-[#E2E8F0] text-[#F8FAFC] dark:text-[#0B0D13]" : "bg-[#EFECE6] dark:bg-[#1D2230] text-[#71717A] dark:text-[#94A3B8]"
+                  }`}>
+                    {cat.count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
-        </div>
-
-        {/* Domain Filter Pills */}
-        <div className="flex flex-wrap gap-1 mb-3">
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat.value;
-            return (
-              <button
-                key={cat.value}
-                onClick={() => { setActiveCategory(cat.value); setShowAll(true); }}
-                className={`px-2 py-0.5 rounded-lg text-[10px] font-medium transition-colors flex items-center gap-1 ${
-                  isActive
-                    ? "bg-stone-900 dark:bg-[#EDE8E1] text-white dark:text-[#201F1D] shadow-2xs font-semibold"
-                    : "bg-white dark:bg-[#292825] text-stone-600 dark:text-[#B8B4AE] hover:text-stone-900 dark:hover:text-[#EDE8E1] border border-stone-200/70 dark:border-[#3D3B36]"
-                }`}
-              >
-                <span>{cat.label}</span>
-                <span className={`text-[8px] font-mono px-1 rounded ${
-                  isActive ? "bg-stone-800 dark:bg-[#33312C] text-stone-300 dark:text-[#EDE8E1]" : "bg-stone-100 dark:bg-[#201F1D] text-stone-500 dark:text-[#9E9A93]"
-                }`}>
-                  {cat.count}
-                </span>
-              </button>
-            );
-          })}
         </div>
 
         {/* Publications List */}
-        <div className="space-y-2">
-          {displayedPubs.map((pub) => (
-            <PublicationRow
-              key={pub.id}
-              pub={pub}
-              isExpanded={expandedId === pub.id}
-              onToggle={() => setExpandedId(expandedId === pub.id ? null : pub.id)}
-            />
-          ))}
-        </div>
+        <motion.div layout className="space-y-2">
+          <AnimatePresence mode="popLayout">
+            {displayedPublications.map((pub) => (
+              <PublicationRow
+                key={pub.id}
+                pub={pub}
+                isExpanded={expandedId === pub.id}
+                onToggle={() => toggleExpand(pub.id)}
+              />
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
-      {/* Show More / Show Less Toggle */}
-      {!isSearching && filteredPubs.length > 6 && (
-        <div className="mt-3.5 text-center">
+      {/* View All Button */}
+      {!isFiltered && publications.length > 4 && (
+        <div className="mt-3 text-center">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="inline-flex items-center gap-1 px-3 py-1 bg-white dark:bg-[#292825] hover:bg-stone-50 dark:hover:bg-[#33312C] text-stone-800 dark:text-[#EDE8E1] text-xs font-semibold rounded-lg border border-stone-200 dark:border-[#3D3B36] transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1 px-3.5 py-1 bg-white dark:bg-[#12151F] hover:bg-[#FAF9F5] dark:hover:bg-[#1D2230] text-[#18181B] dark:text-[#F8FAFC] text-xs sm:text-sm font-semibold rounded-lg border border-[#E2DDD4] dark:border-[#23293A] transition-all shadow-2xs active:scale-95"
           >
-            <span>{showAll ? "Show Top 6 Papers" : `View All ${filteredPubs.length} Papers`}</span>
+            <span>{showAll ? "Show Top 4 Papers" : `View All ${publications.length} Papers`}</span>
             {showAll ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </button>
         </div>
       )}
-
-      {filteredPubs.length === 0 && (
-        <div className="text-center py-6 bg-white dark:bg-[#292825] rounded-xl border border-stone-200 dark:border-[#3D3B36] text-xs text-stone-500 dark:text-[#B8B4AE]">
-          No papers match your query.{" "}
-          <button onClick={() => { setActiveCategory("all"); setSearchQuery(""); }} className="text-amber-700 dark:text-[#E2B77B] underline font-medium">
-            Reset filter
-          </button>
-        </div>
-      )}
-    </section>
+    </motion.section>
   );
 }

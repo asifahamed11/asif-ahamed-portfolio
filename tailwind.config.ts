@@ -13,17 +13,19 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         canvas: {
-          light: "#FAFAF7",
-          dark: "#201F1D",
+          light: "#F6F4EE",
+          dark: "#0B0D13",
         },
         surface: {
           light: "#FFFFFF",
-          dark: "#292825",
-          elevated: "#33312C",
+          muted: "#EFECE6",
+          dark: "#12151F",
+          elevated: "#1D2230",
         },
         line: {
-          light: "#E7E5E0",
-          dark: "#3D3B36",
+          light: "#E2DDD4",
+          dark: "#23293A",
+          DEFAULT: "var(--border-line)",
         },
       },
       fontFamily: {
@@ -32,9 +34,23 @@ const config: Config = {
         mono: ["var(--font-mono)", "JetBrains Mono", "SF Mono", "monospace"],
       },
       boxShadow: {
-        subtle: "0 1px 2px 0 rgba(0, 0, 0, 0.03)",
-        card: "0 1px 3px rgba(28, 25, 23, 0.04), 0 4px 12px rgba(28, 25, 23, 0.02)",
-        "card-dark": "0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15)",
+        subtle: "0 1px 2px 0 rgba(11, 13, 19, 0.03)",
+        card: "0 1px 3px rgba(11, 13, 19, 0.04), 0 4px 12px rgba(11, 13, 19, 0.02)",
+        "card-dark": "0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3)",
+      },
+      keyframes: {
+        shine: {
+          "0%": { backgroundPosition: "200% 0" },
+          "100%": { backgroundPosition: "-200% 0" },
+        },
+        ripple: {
+          "0%": { transform: "scale(0)", opacity: "0.4" },
+          "100%": { transform: "scale(3)", opacity: "0" },
+        },
+      },
+      animation: {
+        shine: "shine 4s linear infinite",
+        ripple: "ripple 0.5s linear",
       },
     },
   },

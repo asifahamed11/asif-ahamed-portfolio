@@ -122,7 +122,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#FAFAF7] dark:bg-[#201F1D] text-[#1C1917] dark:text-[#EDE8E1]`}
+        className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-foreground`}
       >
         <ThemeProvider>
           <ContentProvider>{children}</ContentProvider>

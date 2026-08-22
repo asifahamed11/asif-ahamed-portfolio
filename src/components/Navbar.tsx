@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useContent } from "@/lib/content-provider";
 import ThemeToggle from "@/components/ThemeToggle";
 
@@ -15,133 +15,94 @@ const navItems = [
 
 export default function Navbar() {
   const { personalInfo } = useContent();
-  const [activeSection, setActiveSection] = useState("");
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = navItems.map((item) => item.href.slice(1));
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.getBoundingClientRect().top <= 140) {
-          setActiveSection(sections[i]);
-          break;
-        }
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) setIsMobileOpen(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#FAFAF7]/85 dark:bg-[#201F1D]/85 backdrop-blur-md border-b border-[#E7E5E0] dark:border-[#3D3B36] transition-colors">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-        {/* Brand / Name */}
-        <a
-          href="#hero"
-          className="flex items-center gap-2 group text-stone-900 dark:text-[#EDE8E1] hover:text-stone-600 dark:hover:text-stone-300 transition-colors"
+    <header className="sticky top-0 z-40 w-full bg-[#F6F4EE]/85 dark:bg-[#0B0D13]/85 backdrop-blur-md border-b border-[#E2DDD4] dark:border-[#23293A]">
+      <div className="w-full max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 h-14 flex items-center justify-between">
+        
+        {/* Name / Monogram */}
+        <Link
+          href="/"
+          className="group flex items-center gap-2 text-[#18181B] dark:text-[#F8FAFC] hover:opacity-85 transition-opacity"
         >
-          <span className="font-serif italic text-lg sm:text-xl font-bold tracking-tight">
-            Asif Ahamed
+          <span className="font-serif font-bold text-base sm:text-lg tracking-tight">
+            {personalInfo.name}
           </span>
-          <span className="hidden sm:inline-block text-xs font-mono text-stone-400 dark:text-stone-400">
-            / Rajshahi, BD
+          <span className="text-xs font-mono text-[#71717A] dark:text-[#94A3B8] hidden sm:inline">
+            / {personalInfo.location}
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-stone-600 dark:text-[#B8B4AE]">
-          {navItems.map((item) => {
-            const isActive = activeSection === item.href.slice(1);
-            return (
+        <nav className="hidden md:flex items-center gap-6">
+          <div className="flex items-center gap-5 text-xs sm:text-sm font-medium text-[#52525B] dark:text-[#94A3B8]">
+            {navItems.map((item) => (
               <a
-                key={item.label}
+                key={item.href}
                 href={item.href}
-                className={`transition-colors py-1 ${
-                  isActive
-                    ? "text-stone-900 dark:text-[#EDE8E1] font-semibold border-b-2 border-stone-900 dark:border-[#EDE8E1]"
-                    : "hover:text-stone-900 dark:hover:text-[#EDE8E1]"
-                }`}
+                className="hover:text-[#18181B] dark:hover:text-[#F8FAFC] transition-colors py-1 relative group"
               >
                 {item.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#4F46E5] dark:bg-[#818CF8] transition-all duration-200 group-hover:w-full" />
               </a>
-            );
-          })}
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2.5 pl-4 border-l border-[#E2DDD4] dark:border-[#23293A]">
+            <ThemeToggle />
+            <a
+              href={personalInfo.cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#18181B] hover:bg-[#27272A] dark:bg-[#F8FAFC] dark:hover:bg-white text-[#F6F4EE] dark:text-[#0B0D13] rounded-lg text-xs font-medium transition-all shadow-2xs hover:shadow-indigo-500/10 active:scale-95 group"
+            >
+              <span>Curriculum Vitae</span>
+              <ArrowUpRight className="w-3 h-3 text-[#A1A1AA] dark:text-[#64748B] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
+          </div>
         </nav>
 
-        {/* Right Actions: ThemeToggle + Resume */}
-        <div className="flex items-center gap-2.5">
-          {/* Theme Switcher Toggle */}
+        {/* Mobile Menu Button & Theme Toggle */}
+        <div className="flex md:hidden items-center gap-2">
           <ThemeToggle />
-
-          <a
-            href={personalInfo.cvUrl || "/CV.pdf"}
-            download
-            aria-label="Download Asif Ahamed's CV"
-            className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-stone-700 dark:text-[#EDE8E1] hover:text-stone-900 dark:hover:text-white px-3 py-1.5 rounded-lg border border-stone-300 dark:border-[#3D3B36] hover:border-stone-400 dark:hover:border-[#524F49] bg-white dark:bg-[#292825] hover:bg-stone-50 dark:hover:bg-[#33312C] transition-all active:scale-95 shadow-xs"
-          >
-            <span>Curriculum Vitae</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-stone-400 dark:text-stone-400" />
-          </a>
-
-          {/* Mobile Menu Toggle */}
           <button
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-stone-100 dark:hover:bg-[#292825] text-stone-700 dark:text-[#EDE8E1] transition-colors"
-            aria-label="Toggle menu"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-1.5 text-[#52525B] dark:text-[#94A3B8] hover:text-[#18181B] dark:hover:text-[#F8FAFC] rounded-lg border border-[#E2DDD4] dark:border-[#23293A]"
+            aria-label="Toggle Navigation Menu"
           >
-            {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Drawer */}
-      <AnimatePresence>
-        {isMobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b border-stone-200 dark:border-[#3D3B36] bg-[#FAFAF7] dark:bg-[#201F1D] px-4 py-4 overflow-hidden"
-          >
-            <div className="flex flex-col gap-2">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setIsMobileOpen(false)}
-                  className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                    activeSection === item.href.slice(1)
-                      ? "bg-stone-200/80 dark:bg-[#292825] text-stone-900 dark:text-[#EDE8E1] font-semibold"
-                      : "text-stone-600 dark:text-[#B8B4AE] hover:text-stone-900 dark:hover:text-[#EDE8E1] hover:bg-stone-100 dark:hover:bg-[#292825]/60"
-                  }`}
-                >
-                  {item.label}
-                </a>
-              ))}
-              <div className="pt-2 mt-1 border-t border-stone-200 dark:border-[#3D3B36]">
-                <a
-                  href={personalInfo.cvUrl || "/CV.pdf"}
-                  download
-                  className="flex items-center justify-center gap-1.5 w-full py-2.5 bg-stone-900 dark:bg-[#EDE8E1] text-white dark:text-[#201F1D] rounded-lg text-xs font-semibold"
-                >
-                  <span>Download Curriculum Vitae (PDF)</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-stone-400 dark:text-stone-600" />
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mobileMenuOpen && (
+        <div className="md:hidden border-b border-[#E2DDD4] dark:border-[#23293A] bg-[#F6F4EE] dark:bg-[#0B0D13] px-4 py-3 space-y-2">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-sm font-medium text-[#52525B] dark:text-[#94A3B8] hover:text-[#18181B] dark:hover:text-[#F8FAFC] py-1.5"
+            >
+              {item.label}
+            </a>
+          ))}
+          <div className="pt-2 border-t border-[#E2DDD4] dark:border-[#23293A]">
+            <a
+              href={personalInfo.cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between text-xs font-medium text-[#18181B] dark:text-[#F8FAFC] py-1.5"
+            >
+              <span>Curriculum Vitae</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
