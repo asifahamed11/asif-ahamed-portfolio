@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 interface BlurTextProps {
   text: string;
@@ -21,7 +21,7 @@ export default function BlurText({
 }: BlurTextProps) {
   const elements = animateBy === "words" ? text.split(" ") : text.split("");
 
-  const defaultVariants = {
+  const defaultVariants: Variants = {
     hidden: {
       filter: "blur(10px)",
       opacity: 0,
@@ -34,7 +34,7 @@ export default function BlurText({
       transition: {
         delay: i * (delay / 1000),
         duration: 0.55,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       },
     }),
   };
