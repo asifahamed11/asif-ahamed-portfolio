@@ -78,253 +78,42 @@ export interface Publication {
   id: number;
   title: string;
   conference?: string;
+  book?: string;
+  year: number;
+  doi?: string;
+  supervision?: string;
   status: string;
   paperId?: string;
   authors?: string;
   isAwarded?: boolean;
   awardTitle?: string;
   tags: string[];
-  type: "conference" | "book-chapter" | "abstract" | "poster" | "co-authored";
+  type: "thesis" | "journal" | "conference" | "book-chapter" | "abstract" | "poster" | "co-authored";
   topicDomain: "bioinformatics" | "vision" | "remote-sensing" | "ai-ml";
-  venuePublisher?: "IEEE" | "Springer Nature" | "CRC Press" | "UCICS" | "Other";
+  venuePublisher?: "Thesis" | "VIJIR" | "IEEE" | "Springer Nature" | "UCICS" | "ICWSS" | "Other";
   bibtex?: string;
 }
 
 export const publications: Publication[] = [
-  {
-    id: 1,
-    title:
-      "Hybrid Ensemble Learning for Coding vs. Non-coding Somatic Variant Classification",
-    conference: "UCICS 2026",
-    status: "Accepted and Awarded",
-    paperId: "108",
-    authors:
-      "Most. Alisa Tabassum, Asif Ahamed, Md. Tanvir Hasan, Dr. Ahammad Hossain, Prof. A.H.M. Rahmatullah Imon",
-    isAwarded: true,
-    awardTitle: "Honourable Mention Award",
-    tags: ["Ensemble Learning", "Bioinformatics", "Somatic Variants"],
-    type: "conference",
-    topicDomain: "bioinformatics",
-    venuePublisher: "UCICS",
-    bibtex: `@inproceedings{tabassum2026hybrid,
-  title={Hybrid Ensemble Learning for Coding vs. Non-coding Somatic Variant Classification},
-  author={Tabassum, Most. Alisa and Ahamed, Asif and Hasan, Md. Tanvir and Hossain, Ahammad and Imon, A.H.M. Rahmatullah},
-  booktitle={Proceedings of the UCICS 2026},
-  year={2026}
-}`,
-  },
-  {
-    id: 2,
-    title:
-      "A Novel Approach for Non-coding Somatic Driver Mutations Classification Using Machine Learning",
-    conference: "UCICS 2026",
-    status: "Accepted",
-    paperId: "106",
-    authors:
-      "Most. Alisa Tabassum, Asif Ahamed, Md. Tanvir Hasan, Dr. Ahammad Hossain, Prof. A.H.M. Rahmatullah Imon",
-    tags: ["Machine Learning", "Bioinformatics", "Driver Mutations"],
-    type: "conference",
-    topicDomain: "bioinformatics",
-    venuePublisher: "UCICS",
-    bibtex: `@inproceedings{tabassum2026novel,
-  title={A Novel Approach for Non-coding Somatic Driver Mutations Classification Using Machine Learning},
-  author={Tabassum, Most. Alisa and Ahamed, Asif and Hasan, Md. Tanvir and Hossain, Ahammad and Imon, A.H.M. Rahmatullah},
-  booktitle={Proceedings of the UCICS 2026},
-  year={2026}
-}`,
-  },
-  {
-    id: 3,
-    title:
-      "Optimizing Deep Learning Architectures for Accurate Skin Lesion Classification on the HAM10000 Dataset",
-    conference: "IEEE QPAIN 2025",
-    status: "Published",
-    paperId: "123",
-    authors:
-      "Md. Shakhawat Hossain, Asif Ahamed, Md. Sajjad Ali, Tanusree Sharma, Dr. Ahammad Hossain",
-    tags: ["Deep Learning", "HAM10000", "Medical Imaging", "CNN"],
-    type: "conference",
-    topicDomain: "vision",
-    venuePublisher: "IEEE",
-    bibtex: `@inproceedings{hossain2025optimizing,
-  title={Optimizing Deep Learning Architectures for Accurate Skin Lesion Classification on the HAM10000 Dataset},
-  author={Hossain, Md. Shakhawat and Ahamed, Asif and Ali, Md. Sajjad and Sharma, Tanusree and Hossain, Ahammad},
-  booktitle={IEEE QPAIN 2025},
-  year={2025},
-  organization={IEEE}
-}`,
-  },
-  {
-    id: 4,
-    title:
-      "High-Resolution Flood Hazard Mapping in Sirajganj District: A Random Forest Machine Learning Approach with Sentinel-2 MSI and Environmental Covariates",
-    conference: "UCICS 2025",
-    status: "Published",
-    paperId: "64",
-    authors:
-      "Md. Tanvir Hasan, Asif Ahamed, Most. Alisa Tabassum, Dr. Ahammad Hossain",
-    tags: ["Random Forest", "Remote Sensing", "Sentinel-2", "Flood Mapping"],
-    type: "conference",
-    topicDomain: "remote-sensing",
-    venuePublisher: "UCICS",
-    bibtex: `@inproceedings{hasan2025highres,
-  title={High-Resolution Flood Hazard Mapping in Sirajganj District: A Random Forest Machine Learning Approach with Sentinel-2 MSI and Environmental Covariates},
-  author={Hasan, Md. Tanvir and Ahamed, Asif and Tabassum, Most. Alisa and Hossain, Ahammad},
-  booktitle={Proceedings of the UCICS 2025},
-  year={2025}
-}`,
-  },
-  {
-    id: 5,
-    title:
-      "Comparative Assessment of Multi-Scale Flash Flood Inundation Susceptibility in Sunamganj District Using Advanced Machine Learning Approaches",
-    conference: "UCICS 2025",
-    status: "Published",
-    paperId: "65",
-    authors:
-      "Md. Tanvir Hasan, Asif Ahamed, Most. Alisa Tabassum, Dr. Ahammad Hossain",
-    tags: ["Machine Learning", "Flash Flood", "Environmental Science"],
-    type: "conference",
-    topicDomain: "remote-sensing",
-    venuePublisher: "UCICS",
-  },
-  {
-    id: 6,
-    title:
-      "Unveiling Drivers of Dengue Epidemics in Dhaka: A Multi-Scale Spatiotemporal and Meteorological Modeling Perspective",
-    conference: "UCICS 2025",
-    status: "Published",
-    paperId: "66",
-    authors:
-      "Md. Tanvir Hasan, Asif Ahamed, Most. Alisa Tabassum, Dr. Ahammad Hossain",
-    tags: ["Spatiotemporal Modeling", "Epidemiology", "Dengue", "Meteorology"],
-    type: "conference",
-    topicDomain: "remote-sensing",
-    venuePublisher: "UCICS",
-  },
-  {
-    id: 7,
-    title:
-      "Enhancing Flood Prediction Through Hybrid Stacking Ensemble Learning and Geospatial Data Fusion: A Case Study in Rangpur Division, Bangladesh",
-    conference: "UCICS 2025",
-    status: "Published",
-    paperId: "125",
-    authors:
-      "Asif Ahamed, Md. Tanvir Hasan, Most. Alisa Tabassum, Dr. Ahammad Hossain",
-    tags: ["Stacking Ensemble", "Geospatial Fusion", "Flood Prediction"],
-    type: "conference",
-    topicDomain: "remote-sensing",
-    venuePublisher: "UCICS",
-  },
-  {
-    id: 8,
-    title:
-      "Comprehensive Multi-Decadal Assessment of Groundwater Level Fluctuations in Godagari Upazila: Insights from Spatial, Trend, and Statistical Modeling",
-    conference: "ICWSS 2026",
-    status: "Accepted (Abstract)",
-    authors:
-      "Md. Tanvir Hasan, Asif Ahamed, Most. Alisa Tabassum, Dr. Ahammad Hossain",
-    tags: ["Groundwater Modeling", "Spatial Analysis", "Hydrology"],
-    type: "abstract",
-    topicDomain: "remote-sensing",
-    venuePublisher: "Other",
-  },
-  {
-    id: 9,
-    title:
-      "Impact of Global Precipitation Measurement (GPM) Products on Drought Monitoring and Agricultural Water Management",
-    conference: "Springer Nature",
-    status: "Published (Chapter 7)",
-    authors: "Asif Ahamed et al.",
-    tags: ["Drought Monitoring", "Agriculture", "GPM Products", "Hydrology"],
-    type: "book-chapter",
-    topicDomain: "remote-sensing",
-    venuePublisher: "Springer Nature",
-  },
-  {
-    id: 10,
-    title:
-      "Comparative Assessment of Extreme Weather Impacts on Agriculture in South Asia and Southeast Asia",
-    conference: "Springer Nature",
-    status: "Accepted",
-    authors: "Asif Ahamed et al.",
-    tags: ["Extreme Weather", "Agriculture", "Climate Impact"],
-    type: "book-chapter",
-    topicDomain: "remote-sensing",
-    venuePublisher: "Springer Nature",
-  },
-  {
-    id: 11,
-    title:
-      "Integration of GPM Satellite Data and Machine Learning for Extreme Flood and Drought Event Prediction in Asia",
-    conference: "Springer Nature",
-    status: "Accepted",
-    authors: "Asif Ahamed et al.",
-    tags: ["GPM Data", "Machine Learning", "Extreme Events", "Prediction"],
-    type: "book-chapter",
-    topicDomain: "ai-ml",
-    venuePublisher: "Springer Nature",
-  },
-  {
-    id: 12,
-    title:
-      "Long-term Trends in Atmospheric Aerosol Loading and Their Correlation with Climate Anomalies in Southern Asia",
-    conference: "CRC Press",
-    status: "Accepted",
-    authors: "Asif Ahamed et al.",
-    tags: ["Aerosols", "Climate Anomalies", "Atmospheric Science"],
-    type: "book-chapter",
-    topicDomain: "remote-sensing",
-    venuePublisher: "CRC Press",
-  },
-  {
-    id: 13,
-    title:
-      "Evaluating the Role of Advanced Satellite Remote Sensing and Machine Learning in Forest Fire Risk Assessment and Management",
-    conference: "CRC Press",
-    status: "Accepted",
-    authors: "Asif Ahamed et al.",
-    tags: ["Forest Fire", "Remote Sensing", "Risk Assessment"],
-    type: "book-chapter",
-    topicDomain: "ai-ml",
-    venuePublisher: "CRC Press",
-  },
-  {
-    id: 14,
-    title:
-      "Assessment of River Water Quality Indices and Machine Learning-Based Pollution Prediction in Major Asian River Basins",
-    conference: "CRC Press",
-    status: "Accepted",
-    authors: "Asif Ahamed et al.",
-    tags: ["Water Quality", "Pollution Prediction", "River Basins"],
-    type: "book-chapter",
-    topicDomain: "ai-ml",
-    venuePublisher: "CRC Press",
-  },
-  {
-    id: 15,
-    title:
-      "Multi-Sensor Satellite Remote Sensing and Deep Learning for Monitoring Coastal Erosion and Landform Dynamics in Southeast Asia",
-    conference: "CRC Press",
-    status: "Accepted",
-    authors: "Asif Ahamed et al.",
-    tags: ["Coastal Erosion", "Multi-Sensor", "Deep Learning"],
-    type: "book-chapter",
-    topicDomain: "vision",
-    venuePublisher: "CRC Press",
-  },
-  {
-    id: 16,
-    title:
-      "Machine Learning-Based Evaluation of Heavy Metal Contamination in Soil and Water Across Major Industrial Zones in Asia",
-    conference: "CRC Press",
-    status: "Accepted",
-    authors: "Asif Ahamed et al.",
-    tags: ["Heavy Metals", "Soil Contamination", "Industrial Zones"],
-    type: "book-chapter",
-    topicDomain: "ai-ml",
-    venuePublisher: "CRC Press",
-  },
+  { id: 1, title: "High Confidence Somatic Variant Pathogenicity Prediction Based on Genomic Data Using a Multimodal Machine Learning Framework", status: "Thesis", year: 2026, supervision: "Dr. Ahammad Hossain", authors: "Asif Ahamed (223311112), Md. Tanvir Hasan (223311099), Most. Alisa Tabassum (223311101)", tags: ["Thesis", "Bioinformatics", "Somatic Variants", "Multimodal ML"], type: "thesis", topicDomain: "bioinformatics", venuePublisher: "Thesis" },
+  { id: 2, title: "Hybrid Ensemble Learning for Coding vs. Non-coding Somatic Variant Classification - Extended Version", conference: "Varendra International Journal for Interdisciplinary Research (VIJIR), Special Issue", status: "Invited Extended Version", year: 2026, authors: "Most. Alisa Tabassum, Asif Ahamed, Md. Tanvir Hasan, Md. Sajeeb Mondol, Ahammad Hossain, A.H.M. Rahmatullah Imon", tags: ["Journal Article", "Ensemble Learning", "Bioinformatics", "Somatic Variants"], type: "journal", topicDomain: "bioinformatics", venuePublisher: "VIJIR" },
+  { id: 3, title: "Improved Classification of Retinal Disease: An Ensemble Deep Learning Approach for Diabetic Retinopathy, Glaucoma, and Cataracts", conference: "2025 International Conference on Quantum Photonics, Artificial Intelligence, and Networking (QPAIN)", status: "Published", year: 2025, doi: "10.1109/QPAIN66474.2025.11172194", authors: "Asif Ahamed, Md. Taufiq Khan, Md. Shahid Ahammed Shakil, Md. Musfiqur Rahman Mridha, Md. Fatin Nibbrash Nakib, Md. Humaun Huda, Refat-E-Jannat", tags: ["IEEE", "Retinal Disease", "Deep Learning", "Medical Imaging"], type: "conference", topicDomain: "vision", venuePublisher: "IEEE" },
+  { id: 4, title: "Ensemble Learning in Rice Leaf Diseases Classification", conference: "QPAIN 2025", status: "Published", year: 2025, doi: "10.1109/QPAIN66474.2025.11172222", authors: "Md. Mizanur Rahman, Md. Taufiq Khan, Md. Musfiqur Rahman Mridha, Md. Arafat Ibna Mizan, Md. Fatin Nibbrash Nakib, Asif Ahamed, Md. Humaun Huda", tags: ["IEEE", "Rice Leaf Diseases", "Ensemble Learning", "Agriculture"], type: "conference", topicDomain: "vision", venuePublisher: "IEEE" },
+  { id: 5, title: "Multiple Face-Emotion Recognition Using Attention Mechanisms in Deep Learning", conference: "QPAIN 2025", status: "Published", year: 2025, doi: "10.1109/QPAIN66474.2025.11171884", authors: "Refat-E-Jannat, Md. Arafat Ibna Mizan, Md. Taufiq Khan, Iffath Tanjim Moon, Md. Musfiqur Rahman Mridha, Md. Fatin Nibbrash Nakib, Asif Ahamed", tags: ["IEEE", "Face Emotion", "Attention Mechanisms", "Deep Learning"], type: "conference", topicDomain: "vision", venuePublisher: "IEEE" },
+  { id: 6, title: "Bone Fracture Classification in X-ray Images: A Deep Learning Approach Leveraging Transfer Learning", conference: "Undergraduate Conference on Intelligent Computing and Systems (UCICS)", status: "Conference Paper", year: 2025, authors: "Md. Sabbir Ahammed, Asif Ahamed, Md. Humaun Huda, Md. Musfiqur Rahman Mridha, Md. Jamil Chaudhary, Md. Fatin Nibbrash Nakib", tags: ["UCICS", "Bone Fracture", "X-ray", "Transfer Learning"], type: "conference", topicDomain: "vision", venuePublisher: "UCICS" },
+  { id: 7, title: "Brain Tumor Classification with MRI Images using Deep Learning Technique", conference: "Undergraduate Conference on Intelligent Computing and Systems (UCICS)", status: "Conference Paper", year: 2025, authors: "Mst. Nurtaz Jahan, Md. Rabby Ahmed, Asif Ahamed, Anamika Saha, Shourav Paul, Sakib Imtiaz", tags: ["UCICS", "Brain Tumor", "MRI", "Deep Learning"], type: "conference", topicDomain: "vision", venuePublisher: "UCICS" },
+  { id: 8, title: "Exploring Multi-Model Machine Learning Approaches for Pathogenicity Classification of Somatic Gene Mutations", conference: "UCICS 2026", status: "Accepted", year: 2026, authors: "Asif Ahamed, Md. Tanvir Hasan, Most. Alisa Tabassum, Ahammad Hossain, Md. Mizanur Rahman, A.H.M. Rahmatullah Imon", tags: ["UCICS", "Bioinformatics", "Somatic Mutations", "Machine Learning"], type: "conference", topicDomain: "bioinformatics", venuePublisher: "UCICS" },
+  { id: 9, title: "Hybrid Ensemble Machine Learning Modeling for Tumor Prediction Using COSMIC Differential Methylation Data", conference: "UCICS 2026", status: "Accepted", year: 2026, authors: "Md. Tanvir Hasan, Asif Ahamed, Most. Alisa Tabassum, Md. Nahara Tasnim Rubay, Ahammad Hossain, A.H.M. Rahmatullah Imon", tags: ["UCICS", "Tumor Prediction", "COSMIC", "Methylation"], type: "conference", topicDomain: "bioinformatics", venuePublisher: "UCICS" },
+  { id: 10, title: "Hybrid Ensemble Learning for Coding vs. Non-coding Somatic Variant Classification", conference: "UCICS 2026", status: "Accepted; Achievers' Honorable Mention Award; Selected for VIJIR Extended Version", year: 2026, authors: "Most. Alisa Tabassum, Asif Ahamed, Md. Tanvir Hasan, Md. Sajeeb Mondol, Ahammad Hossain, A.H.M. Rahmatullah Imon", isAwarded: true, awardTitle: "Achievers' Honorable Mention Award", tags: ["UCICS", "Awarded", "Ensemble Learning", "Somatic Variants"], type: "conference", topicDomain: "bioinformatics", venuePublisher: "UCICS" },
+  { id: 11, title: "Dual-branch Swin-Transformer for Multi-Modal Wetland Change Detection in the Bengal Delta", conference: "International Conference on Wetland, Society and Sustainability (ICWSS 2026)", status: "Accepted", year: 2026, authors: "Asif Ahamed, Md. Tanvir Hasan, Most. Alisa Tabassum, Ahammad Hossain, Md. Kamruzzaman, Jayanta Das, A.H.M. Rahmatullah Imon", tags: ["ICWSS", "Swin Transformer", "Wetlands", "Change Detection"], type: "conference", topicDomain: "remote-sensing", venuePublisher: "ICWSS" },
+  { id: 12, title: "Integrated Machine Learning Framework for Predicting Water Quality and Water Level in Wetlands: A Data-Driven Management Approach", conference: "ICWSS 2026", status: "Accepted", year: 2026, authors: "Most. Alisa Tabassum, Asif Ahamed, Md. Tanvir Hasan, Ahammad Hossain, Md. Kamruzzaman, Jayanta Das, A.H.M. Rahmatullah Imon", tags: ["ICWSS", "Water Quality", "Water Level", "Wetlands"], type: "conference", topicDomain: "remote-sensing", venuePublisher: "ICWSS" },
+  { id: 13, title: "Attention-Based Deep-Learning Forecasts for Monsoon-Driven Floods: A Temporal Fusion Transformer Application to the Jamuna River in Bangladesh", book: "Rivers of Humid Tropics in the Anthropocene", status: "Accepted", year: 2026, authors: "Asif Ahamed, Ahammad Hossain, Md. Tanvir Hasan, Most. Alisa Tabassum, Md. Kamruzzaman, Jayanta Das, A.H.M. Rahmatullah Imon", tags: ["Springer Nature", "Flood Forecasting", "Temporal Fusion Transformer", "Jamuna River"], type: "book-chapter", topicDomain: "remote-sensing", venuePublisher: "Springer Nature" },
+  { id: 14, title: "Sentinel-1 Driven Explainable Hybrid Framework for Flood Susceptibility and Risk Probability Mapping in the Padma River Basin", book: "Rivers of Humid Tropics in the Anthropocene", status: "Accepted", year: 2026, authors: "Most. Alisa Tabassum, Ahammad Hossain, Asif Ahamed, Md. Tanvir Hasan, Md. Kamruzzaman, Jayanta Das, A.H.M. Rahmatullah Imon", tags: ["Springer Nature", "Sentinel-1", "Flood Susceptibility", "Padma River"], type: "book-chapter", topicDomain: "remote-sensing", venuePublisher: "Springer Nature" },
+  { id: 15, title: "Hybrid Ensemble Deep Learning for Spatio-Temporal Assessment of Riverbank Erosion in the Padma River Using Sentinel-2 Data", book: "Rivers of Humid Tropics in the Anthropocene", status: "Accepted", year: 2026, authors: "Md. Tanvir Hasan, Ahammad Hossain, Asif Ahamed, Most. Alisa Tabassum, Md. Kamruzzaman, A.H.M. Rahmatullah Imon", tags: ["Springer Nature", "Sentinel-2", "Riverbank Erosion", "Padma River"], type: "book-chapter", topicDomain: "remote-sensing", venuePublisher: "Springer Nature" },
+  { id: 16, title: "Beyond Static Mapping: A Spatio-Temporal Deep Learning Framework for Forecasting Riverbank Erosion in the Bengal Delta", book: "Rivers of Humid Tropics in the Anthropocene", status: "Accepted", year: 2026, authors: "Asif Ahamed, Ahammad Hossain, Md. Tanvir Hasan, Most. Alisa Tabassum, Md. Kamruzzaman, Jayanta Das, A.H.M. Rahmatullah Imon", tags: ["Springer Nature", "Spatio-Temporal", "Riverbank Erosion", "Bengal Delta"], type: "book-chapter", topicDomain: "remote-sensing", venuePublisher: "Springer Nature" },
+  { id: 17, title: "Hybrid Ensemble Deep Learning for Urban Ecological Analysis Using Sentinel-2 RGB Land Cover Imagery Dataset", book: "Ecological Urbanism", status: "Accepted", year: 2026, authors: "Md. Tanvir Hasan, Ahammad Hossain, Asif Ahamed, Most. Alisa Tabassum, Md. Kamruzzaman, Jayanta Das, A.H.M. Rahmatullah Imon", tags: ["Springer Nature", "Urban Ecology", "Sentinel-2", "Land Cover"], type: "book-chapter", topicDomain: "remote-sensing", venuePublisher: "Springer Nature" },
+  { id: 18, title: "Dynamic Soil Erosion Forecasting through Spatiotemporal Fusion and Hybrid Deep Learning", book: "Landscape Erosion and Sustainability", status: "Accepted", year: 2026, authors: "Most. Alisa Tabassum, Md. Tanvir Hasan, Asif Ahamed, Ahammad Hossain, Md. Kamruzzaman, Jayanta Das, A.H.M. Rahmatullah Imon", tags: ["Springer Nature", "Soil Erosion", "Spatiotemporal Fusion", "Deep Learning"], type: "book-chapter", topicDomain: "remote-sensing", venuePublisher: "Springer Nature" },
+  { id: 19, title: "Hybrid Ensemble Machine Learning-Based Land Cover Classification from Sentinel-2 RGB Data for Soil Erosion Susceptibility Interpretation", book: "Landscape Erosion and Sustainability", status: "Accepted", year: 2026, authors: "Md. Tanvir Hasan, Ahammad Hossain, Asif Ahamed, Most. Alisa Tabassum, Md. Kamruzzaman, A.H.M. Rahmatullah Imon, Jayanta Das", tags: ["Springer Nature", "Land Cover", "Sentinel-2", "Soil Erosion"], type: "book-chapter", topicDomain: "remote-sensing", venuePublisher: "Springer Nature" },
 ];
 
 export interface Project {

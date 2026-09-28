@@ -16,7 +16,8 @@ function PublicationRow({ pub, isExpanded, onToggle }: { pub: Publication; isExp
 
   const copyAPA = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const citation = `${pub.authors ? pub.authors + ". " : ""}"${pub.title}." ${pub.conference ? pub.conference + ". " : ""}(${pub.status}).`;
+    const venue = pub.conference || pub.book || pub.venuePublisher || "Thesis";
+    const citation = `${pub.authors ? pub.authors + ". " : ""}(${pub.year}). "${pub.title}." ${venue}. ${pub.doi ? `https://doi.org/${pub.doi}` : `(${pub.status})`}`;
     await copyToClipboard(citation);
     setCopiedType("apa");
     setTimeout(() => setCopiedType(null), 2000);
@@ -37,7 +38,7 @@ function PublicationRow({ pub, isExpanded, onToggle }: { pub: Publication; isExp
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.25 }}
-      className={`border rounded-xl transition-all duration-200 ${
+      className={`border rounded-2xl transition-all duration-200 overflow-hidden ${
         pub.isAwarded
           ? "border-amber-300/80 dark:border-amber-500/40 bg-amber-50/50 dark:bg-amber-950/20 shadow-2xs"
           : isExpanded
@@ -48,21 +49,21 @@ function PublicationRow({ pub, isExpanded, onToggle }: { pub: Publication; isExp
       {/* Clean Main Row */}
       <div
         onClick={onToggle}
-        className="p-3.5 cursor-pointer flex items-center justify-between gap-3 select-none"
+        className="p-4 cursor-pointer grid grid-cols-[auto_minmax(0,1fr)] lg:grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 select-none"
       >
-        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+        <div className="flex items-center gap-2.5 min-w-0">
           {/* Venue Badge with Vivid Colors */}
           <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/80 text-center shrink-0">
             {pub.venuePublisher || "IEEE"}
           </span>
 
           {/* Title & Award */}
-          <div className="min-w-0 flex-1 flex items-center gap-2 flex-wrap">
-            <h3 className="text-sm sm:text-[15px] font-bold text-[#18181B] dark:text-[#F8FAFC] leading-snug truncate">
+          <div className="min-w-0">
+            <h3 className="text-sm sm:text-[15px] font-bold text-[#18181B] dark:text-[#F8FAFC] leading-snug line-clamp-2">
               {pub.title}
             </h3>
             {pub.isAwarded && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 border border-amber-300/80 dark:border-amber-600/50 shrink-0">
+              <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 border border-amber-300/80 dark:border-amber-600/50">
                 <Award className="w-2.5 h-2.5 text-amber-600 dark:text-amber-400" />
                 <span>{pub.awardTitle}</span>
               </span>
@@ -71,7 +72,7 @@ function PublicationRow({ pub, isExpanded, onToggle }: { pub: Publication; isExp
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="col-start-2 lg:col-start-3 flex items-center gap-1.5 shrink-0 justify-self-start lg:justify-self-end">
           <button
             onClick={copyAPA}
             className="px-2 py-1 rounded-md text-xs font-mono text-[#52525B] dark:text-[#94A3B8] hover:text-[#18181B] dark:hover:text-white bg-[#EFECE6] dark:bg-[#1D2230] hover:bg-[#E5E0D5] dark:hover:bg-[#2A3144] transition-colors flex items-center gap-1 active:scale-95"
@@ -112,11 +113,24 @@ function PublicationRow({ pub, isExpanded, onToggle }: { pub: Publication; isExp
           >
             <div className="p-4 space-y-2 text-xs sm:text-sm text-[#52525B] dark:text-[#94A3B8]">
               <p>
-                <strong className="text-[#18181B] dark:text-[#F8FAFC]">Venue:</strong> {pub.conference}
+                <strong className="text-[#18181B] dark:text-[#F8FAFC]">Venue:</strong> {pub.conference || pub.book || "Thesis"}
+              </p>
+              <p>
+                <strong className="text-[#18181B] dark:text-[#F8FAFC]">Year:</strong> {pub.year}
               </p>
               {pub.authors && (
                 <p>
                   <strong className="text-[#18181B] dark:text-[#F8FAFC]">Authors:</strong> {pub.authors}
+                </p>
+              )}
+              {pub.supervision && (
+                <p>
+                  <strong className="text-[#18181B] dark:text-[#F8FAFC]">Supervision:</strong> {pub.supervision}
+                </p>
+              )}
+              {pub.doi && (
+                <p>
+                  <strong className="text-[#18181B] dark:text-[#F8FAFC]">DOI:</strong> {pub.doi}
                 </p>
               )}
               <div className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px]">
@@ -179,7 +193,7 @@ export default function Research() {
     >
       <div>
         {/* Minimal Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 pb-2.5 border-b border-[#E2DDD4] dark:border-[#23293A]">
+        <div className="flex flex-col gap-3 mb-4 pb-3 border-b border-[#E2DDD4] dark:border-[#23293A]">
           <div className="flex items-center gap-2 shrink-0">
             <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#18181B] dark:text-[#F8FAFC] flex items-center gap-2 whitespace-nowrap">
               <BookOpen className="w-5 h-5 text-[#52525B] dark:text-[#94A3B8] inline-block shrink-0" />
@@ -191,7 +205,7 @@ export default function Research() {
           </div>
 
           {/* Clean Segmented Category Tabs with Sliding Pill */}
-          <div className="flex flex-wrap gap-1 relative">
+          <div className="flex gap-1 relative overflow-x-auto pb-1 -mb-1 scrollbar-none">
             {categories.map((cat) => {
               const isActive = activeCategory === cat.value;
               return (
